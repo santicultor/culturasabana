@@ -1,0 +1,1114 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard Cultural · Universidad de La Sabana 2026-1</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+/* Funciones de navegación — deben estar en <head> para que onclick las encuentre */
+function show(id, btn){
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('show'));
+  document.querySelectorAll('.tab-btn').forEach(t => t.classList.remove('on'));
+  const panel = document.getElementById('p-' + id);
+  if(panel) panel.classList.add('show');
+  if(btn) btn.classList.add('on');
+  if(id === 'datos'){
+    const activeSub = document.querySelector('.subtab.on');
+    if(activeSub){
+      const m = activeSub.getAttribute('onclick').match(/'(\w+)'/);
+      if(m) _initSub(m[1]);
+    } else {
+      _initSub('grupos');
+    }
+  }
+}
+function showSub(id, btn){
+  document.querySelectorAll('.subpanel').forEach(p => p.classList.remove('show'));
+  document.querySelectorAll('.subtab').forEach(t => t.classList.remove('on'));
+  const sub = document.getElementById('sub-' + id);
+  if(sub) sub.classList.add('show');
+  if(btn) btn.classList.add('on');
+  _initSub(id);
+}
+function _initSub(id){
+  if(!window.chartsInit) window.chartsInit = {};
+  if(!window.chartsInit[id]){
+    window.chartsInit[id] = true;
+    setTimeout(() => { if(typeof buildCharts === 'function') buildCharts(id); }, 80);
+  }
+}
+</script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --azul:#00205B;--azul2:#00387b;--azulL:#c8d8ec;--azulP:#eef4fb;
+  --verde:#1b5e20;--verdeL:#e8f5e9;--oro:#b8860b;--oroPale:#fdf8ee;
+  --alerta:#b45309;--alertaPale:#fff8e1;
+  --bg:#f2f5fa;--card:#fff;--borde:#e2e8f0;--gris:#64748b;--texto:#1a2744;
+  --s1:0 2px 12px rgba(0,32,91,0.06);--s2:0 8px 28px rgba(0,32,91,0.14);
+  --r:14px;--rsm:8px;
+}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--texto);min-height:100vh;}
+
+/* HEADER */
+.header{background:var(--azul);height:62px;padding:0 2rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;box-shadow:0 2px 12px rgba(0,0,0,0.22);}
+.header img{height:30px;filter:brightness(0) invert(1);}
+.header-fb{font-family:'Playfair Display',serif;font-size:15px;color:#fff;display:none;}
+.header-center{font-size:12px;font-weight:500;color:rgba(255,255,255,0.7);text-align:center;letter-spacing:.02em;}
+.header-center span{display:block;font-size:10px;color:rgba(255,255,255,0.42);margin-top:1px;}
+.header-badge{font-size:10px;background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.75);border:1px solid rgba(255,255,255,0.18);padding:4px 12px;border-radius:20px;letter-spacing:.06em;}
+
+/* TAB BAR */
+.tab-bar{background:#fff;border-bottom:1px solid var(--borde);padding:0 2rem;display:flex;gap:0;position:sticky;top:62px;z-index:100;box-shadow:0 2px 8px rgba(0,32,91,0.04);}
+.tab-btn{font-size:12px;font-weight:500;padding:14px 22px;color:var(--gris);background:transparent;border:none;border-bottom:2.5px solid transparent;cursor:pointer;white-space:nowrap;transition:all .18s;font-family:'DM Sans',sans-serif;}
+.tab-btn:hover{color:var(--azul);}
+.tab-btn.on{color:var(--azul);border-bottom-color:var(--azul);}
+
+/* SUBTABS */
+.subtab-bar{display:flex;gap:6px;margin-bottom:1.5rem;flex-wrap:wrap;}
+.subtab{font-size:12px;font-weight:500;padding:6px 16px;border-radius:20px;border:1.5px solid var(--azul);background:transparent;color:var(--azul);cursor:pointer;transition:all .18s;font-family:'DM Sans',sans-serif;}
+.subtab:hover{background:var(--azulP);}
+.subtab.on{background:var(--azul);color:#fff;}
+
+/* MAIN */
+.main{max-width:1080px;margin:0 auto;padding:2rem 1.5rem 4rem;}
+
+/* PANELS */
+.panel{display:none;}
+.panel.show{display:block;animation:fadeUp .22s ease;}
+.subpanel{display:none;}
+.subpanel.show{display:block;animation:fadeUp .2s ease;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(5px);}to{opacity:1;transform:translateY(0);}}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.5;transform:scale(1.3);}}
+
+/* CARDS */
+.card{background:var(--card);border:1px solid var(--borde);border-radius:var(--r);padding:1.4rem 1.6rem;box-shadow:var(--s1);margin-bottom:1rem;}
+.card-title{font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:.1em;color:var(--gris);padding-bottom:10px;border-bottom:1px solid var(--borde);margin-bottom:1.1rem;}
+
+/* GRIDS */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem;}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;}
+
+/* KPI */
+.kpi-card{background:var(--card);border:1px solid var(--borde);border-radius:var(--r);padding:1.1rem 1.2rem;box-shadow:var(--s1);border-top:3px solid var(--azul);}
+.kpi-card.v{border-top-color:var(--verde);}
+.kpi-card.o{border-top-color:var(--oro);}
+.kpi-card.m{border-top-color:var(--azul2);}
+.kpi-val{font-family:'Playfair Display',serif;font-size:30px;font-weight:600;color:var(--azul);line-height:1;margin-bottom:4px;}
+.kpi-val.v{color:var(--verde);}
+.kpi-val.o{color:var(--oro);}
+.kpi-val.m{color:var(--azul2);}
+.kpi-lbl{font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--gris);line-height:1.4;}
+.kpi-sub{font-size:11px;color:var(--gris);margin-top:3px;}
+
+/* HOME NAV CARDS */
+.nav-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:2rem;}
+.nav-card{background:var(--card);border:1px solid var(--borde);border-radius:var(--r);padding:1.6rem 1.75rem;box-shadow:var(--s1);cursor:pointer;transition:all .2s;position:relative;overflow:hidden;}
+.nav-card:hover{box-shadow:var(--s2);transform:translateY(-2px);}
+.nav-card::after{content:'→';position:absolute;right:1.25rem;bottom:1.25rem;font-size:18px;color:var(--azulL);transition:color .2s;}
+.nav-card:hover::after{color:var(--azul);}
+.nav-icon{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;margin-bottom:14px;}
+.nav-title{font-family:'Playfair Display',serif;font-size:17px;font-weight:500;color:var(--texto);margin-bottom:6px;}
+.nav-desc{font-size:12px;color:var(--gris);line-height:1.55;}
+
+/* STAT BARS */
+.sb{margin-bottom:11px;}
+.sbh{display:flex;justify-content:space-between;margin-bottom:4px;}
+.sbn{font-size:12px;color:var(--texto);}
+.sbv{font-size:12px;font-weight:500;color:var(--azul);}
+.sbb{height:7px;background:var(--azulP);border-radius:4px;overflow:hidden;}
+.sbf{height:100%;border-radius:4px;}
+
+/* PROGRESS */
+.prog{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
+.prog-label{font-size:12px;color:var(--texto);min-width:110px;}
+.prog-track{flex:1;height:7px;background:var(--azulP);border-radius:4px;overflow:hidden;}
+.prog-fill{height:100%;border-radius:4px;}
+.prog-num{font-size:11px;font-weight:500;color:var(--azul);min-width:52px;text-align:right;}
+
+/* NOTES */
+.note{border-radius:var(--rsm);padding:.85rem 1rem;font-size:12px;line-height:1.6;}
+.note.azul{background:var(--azulP);border-left:3px solid var(--azul);color:var(--azul);}
+.note.verde{background:var(--verdeL);border-left:3px solid var(--verde);color:var(--verde);}
+.note.oro{background:var(--oroPale);border-left:3px solid var(--oro);color:var(--alerta);}
+
+/* TABLES */
+.rt{width:100%;border-collapse:collapse;}
+.rt th{font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--gris);padding:0 8px 8px;text-align:left;border-bottom:1px solid var(--borde);}
+.rt td{padding:9px 8px;font-size:12px;border-bottom:1px solid var(--borde);vertical-align:middle;}
+.rt tr:last-child td{border-bottom:none;}
+.rt tr:hover td{background:var(--azulP);}
+.rn{font-family:'Playfair Display',serif;font-size:15px;font-weight:600;color:var(--azul);}
+.rbb{height:5px;background:var(--azulP);border-radius:3px;}
+.rbf{height:100%;border-radius:3px;background:var(--azul);}
+
+/* BADGES */
+.badge{display:inline-block;padding:2px 9px;border-radius:20px;font-size:11px;font-weight:500;}
+.b-verde{background:#e8f5e9;color:#1b5e20;}
+.b-azul{background:#eef4fb;color:#00387b;}
+.b-oro{background:#fff8e1;color:#b45309;}
+
+/* RANGO */
+.rango-card{border-radius:10px;padding:1.1rem;text-align:center;}
+
+/* LÍDERES */
+.lider-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;}
+.lider-card{background:var(--bg);border:1px solid var(--borde);border-radius:10px;padding:.9rem 1rem;transition:box-shadow .2s;}
+.lider-card:hover{box-shadow:var(--s2);}
+.lider-av{width:32px;height:32px;border-radius:50%;background:var(--azul);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;color:#fff;margin-bottom:8px;font-family:'Playfair Display',serif;}
+.lider-name{font-size:12px;font-weight:500;color:var(--texto);margin-bottom:2px;line-height:1.3;}
+.lider-grupo{font-size:10px;color:var(--azul2);margin-bottom:2px;}
+.lider-fac{font-size:10px;color:var(--gris);font-style:italic;}
+
+/* ASCUN banner */
+.ascun-banner{background:linear-gradient(135deg,#00205B,#00387b);border-radius:var(--r);padding:1.5rem 2rem;display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;color:#fff;position:relative;overflow:hidden;}
+.ascun-banner::after{content:'ASCUN 2026';position:absolute;right:1rem;top:50%;transform:translateY(-50%);font-family:'Playfair Display',serif;font-size:64px;font-weight:700;color:rgba(255,255,255,0.04);pointer-events:none;white-space:nowrap;}
+.a-stat{text-align:center;}
+.a-val{font-family:'Playfair Display',serif;font-size:38px;font-weight:600;color:#fff;line-height:1;}
+.a-lbl{font-size:10px;color:rgba(255,255,255,0.52);text-transform:uppercase;letter-spacing:.08em;margin-top:4px;}
+.a-div{width:1px;height:50px;background:rgba(255,255,255,0.18);}
+
+/* UX / Bienestar */
+.ux-rasgo{display:flex;align-items:flex-start;gap:12px;padding:12px 14px;background:var(--azulP);border-radius:10px;margin-bottom:8px;}
+.ux-icon{width:32px;height:32px;border-radius:8px;background:var(--azul);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.dim-card{background:var(--card);border:1px solid var(--borde);border-radius:var(--r);padding:1.1rem 1.2rem;border-left:4px solid var(--azul);}
+.dim-card.v{border-left-color:var(--verde);}
+.dim-card.o{border-left-color:var(--oro);}
+.obj-pill{background:rgba(255,255,255,0.08);border-radius:8px;padding:14px 16px;}
+
+/* FOOTER */
+.footer{background:var(--azul);padding:1.2rem 2rem;display:flex;justify-content:space-between;align-items:center;}
+.footer-l{font-size:11px;color:rgba(255,255,255,0.5);}
+.footer-l strong{color:rgba(255,255,255,0.8);font-weight:500;}
+.footer-r{font-size:10px;color:rgba(255,255,255,0.35);font-style:italic;}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div style="display:flex;align-items:center;gap:12px;">
+    <img src="https://usabana.widen.net/content/5663b75e-714e-470a-a301-f45e6981fe45/web/LOGO_POSITIVO-HORIZONTAL-COLOR.webp?v=5663b75e-714e-470a-a301-f45e6981fe45"
+         alt="Universidad de La Sabana"
+         onerror="this.style.display='none';document.querySelector('.header-fb').style.display='block';">
+    <div class="header-fb">Universidad de La Sabana</div>
+  </div>
+  <div class="header-center">Coordinación de Desarrollo Cultural<span>Dirección de Bienestar y Experiencia del Estudiante</span></div>
+  <div class="header-badge">2026-1</div>
+</header>
+
+<nav class="tab-bar">
+  <button id="tab-home"       class="tab-btn on"  onclick="show('home',this)">🏠 Inicio</button>
+  <button id="tab-datos"      class="tab-btn"     onclick="show('datos',this)">📊 Datos del semestre</button>
+  <button id="tab-experience" class="tab-btn"     onclick="show('experience',this)">⭐ UniSabana Experience</button>
+  <button id="tab-bienestar"  class="tab-btn"     onclick="show('bienestar',this)">🧭 Modelo de Bienestar</button>
+  <button id="tab-estrategia" class="tab-btn"     onclick="show('estrategia',this)">🎯 Estrategia</button>
+</nav>
+
+<main class="main">
+
+<!-- ══════════════════════════
+     HOME
+══════════════════════════ -->
+<div id="p-home" class="panel show">
+
+  <!-- Hero propósito -->
+  <div style="background:linear-gradient(135deg,#00205B,#00387b);border-radius:var(--r);padding:2.5rem 2.5rem 2rem;margin-bottom:1.5rem;position:relative;overflow:hidden;">
+    <div style="position:absolute;right:-60px;top:-60px;width:280px;height:280px;border-radius:50%;border:50px solid rgba(255,255,255,0.04);"></div>
+    <div style="position:absolute;right:100px;bottom:-80px;width:180px;height:180px;border-radius:50%;border:35px solid rgba(255,255,255,0.03);"></div>
+    <div style="position:relative;z-index:1;">
+      <div style="font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,0.5);margin-bottom:10px;">Jefatura de Desarrollo Cultural · 2026-1</div>
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:1.5rem;">
+        <div style="font-family:'Playfair Display',serif;font-size:28px;font-weight:600;color:#fff;line-height:1.2;">Dashboard Desarrollo Cultural</div>
+        <div style="display:flex;align-items:center;gap:6px;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);border-radius:20px;padding:5px 12px;flex-shrink:0;">
+          <div style="width:7px;height:7px;border-radius:50%;background:#4ade80;animation:pulse 2s infinite;"></div>
+          <span style="font-size:10px;color:rgba(255,255,255,0.8);letter-spacing:.06em;font-weight:500;">En vivo · 2026-1</span>
+        </div>
+      </div>
+      <!-- 3 pilares en línea -->
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(255,255,255,0.12);border-radius:10px;overflow:hidden;max-width:680px;">
+        <div style="background:rgba(255,255,255,0.06);padding:1rem 1.1rem;">
+          <div style="font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,0.5);margin-bottom:5px;">Propósito</div>
+          <div style="font-size:12px;color:#fff;line-height:1.5;">Desarrollar habilidades artísticas que complementen la formación académica, alineadas con el Modelo de Bienestar y UniSabana Experience</div>
+        </div>
+        <div style="background:rgba(255,255,255,0.06);padding:1rem 1.1rem;">
+          <div style="font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,0.5);margin-bottom:5px;">Este dashboard</div>
+          <div style="font-size:12px;color:#fff;line-height:1.5;">Apoyo para la toma de decisiones y el seguimiento estratégico de los grupos representativos y su presencia institucional</div>
+        </div>
+        <div style="background:rgba(255,255,255,0.06);padding:1rem 1.1rem;">
+          <div style="font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,0.5);margin-bottom:5px;">Impacto</div>
+          <div style="font-size:12px;color:#fff;line-height:1.5;">444 estudiantes activos · Promedio 4.2 · 49 participaciones</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- NAV CARDS -->
+  <div class="nav-grid">
+    <div class="nav-card" onclick="show('datos', document.getElementById('tab-datos'))">
+      <div class="nav-icon" style="background:#eef4fb;">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#00205B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+      </div>
+      <div class="nav-title">Datos del semestre</div>
+      <div class="nav-desc">Grupos, participaciones, estudiantes, rendimiento académico, ASCUN y líderes culturales.</div>
+    </div>
+    <div class="nav-card" onclick="show('experience', document.getElementById('tab-experience'))">
+      <div class="nav-icon" style="background:#fdf8ee;">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#b8860b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+      </div>
+      <div class="nav-title">UniSabana Experience</div>
+      <div class="nav-desc">Cómo los grupos se alinean con los 2 rasgos UX y el marco de Experiencias de Alto Impacto (HIX).</div>
+    </div>
+    <div class="nav-card" onclick="show('bienestar', document.getElementById('tab-bienestar'))">
+      <div class="nav-icon" style="background:#e8f5e9;">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1b5e20" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      </div>
+      <div class="nav-title">Modelo de Bienestar</div>
+      <div class="nav-desc">Alineación de la cultura con las 6 dimensiones del ser humano y los principios de cuidado institucional.</div>
+    </div>
+  </div>
+
+  <!-- KPIs rápidos + objetivos -->
+  <div class="g2">
+    <div class="card">
+      <div class="card-title">Semestre 2026-1 · cifras clave</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+        <div class="kpi-card" style="margin-bottom:0;"><div class="kpi-val">444</div><div class="kpi-lbl">Estudiantes inscritos</div></div>
+        <div class="kpi-card m" style="margin-bottom:0;"><div class="kpi-val m">15</div><div class="kpi-lbl">Grupos representativos</div></div>
+        <div class="kpi-card v" style="margin-bottom:0;"><div class="kpi-val v">4.2</div><div class="kpi-lbl">Promedio APC 2026-1</div></div>
+        <div class="kpi-card o" style="margin-bottom:0;"><div class="kpi-val o">49</div><div class="kpi-lbl">Participaciones totales</div></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">Objetivos · hoja de ruta</div>
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <div style="display:flex;gap:12px;align-items:flex-start;">
+          <div style="width:8px;height:8px;border-radius:50%;background:var(--azul);margin-top:5px;flex-shrink:0;"></div>
+          <div>
+            <div style="font-size:11px;font-weight:500;color:var(--azul);margin-bottom:2px;">Corto plazo</div>
+            <div style="font-size:11px;color:var(--gris);line-height:1.55;">Acompañar grupos en ASCUN · seguimiento académico de estudiantes · fortalecer líderes · abrir nuevos escenarios · sostener la comunidad cultural</div>
+          </div>
+        </div>
+        <div style="display:flex;gap:12px;align-items:flex-start;">
+          <div style="width:8px;height:8px;border-radius:50%;background:var(--azul2);margin-top:5px;flex-shrink:0;"></div>
+          <div>
+            <div style="font-size:11px;font-weight:500;color:var(--azul2);margin-bottom:2px;">Mediano plazo</div>
+            <div style="font-size:11px;color:var(--gris);line-height:1.55;">Profundizar la alineación con UniSabana Experience · escalar el portafolio institucional · ampliar facultades vinculadas</div>
+          </div>
+        </div>
+        <div style="display:flex;gap:12px;align-items:flex-start;">
+          <div style="width:8px;height:8px;border-radius:50%;background:var(--azulL);margin-top:5px;flex-shrink:0;"></div>
+          <div>
+            <div style="font-size:11px;font-weight:500;color:var(--gris);margin-bottom:2px;">Largo plazo</div>
+            <div style="font-size:11px;color:var(--gris);line-height:1.55;">Referente de formación humanista en Colombia · comunidad cultural articulada con métricas de impacto</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ══════════════════════════
+     DATOS DEL SEMESTRE
+══════════════════════════ -->
+<div id="p-datos" class="panel">
+  <div class="subtab-bar">
+    <button class="subtab on" onclick="showSub('grupos',this)">Grupos</button>
+    <button class="subtab"    onclick="showSub('estudiantes',this)">Estudiantes</button>
+    <button class="subtab"    onclick="showSub('academico',this)">Rendimiento</button>
+    <button class="subtab"    onclick="showSub('ascun',this)">ASCUN</button>
+    <button class="subtab"    onclick="showSub('lideres',this)">Líderes</button>
+    <button class="subtab"    onclick="showSub('inventario',this)">Inventario</button>
+  </div>
+
+  <!-- GRUPOS -->
+  <div id="sub-grupos" class="subpanel show">
+    <div class="card">
+      <div class="card-title">Participaciones por grupo · 49 en total</div>
+      <div style="display:flex;gap:14px;margin-bottom:14px;flex-wrap:wrap;">
+        <span style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--gris);"><span style="width:10px;height:10px;border-radius:2px;background:#00205B;display:inline-block;"></span>Alta (5+)</span>
+        <span style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--gris);"><span style="width:10px;height:10px;border-radius:2px;background:#00387b;display:inline-block;"></span>Media (3–4)</span>
+        <span style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--gris);"><span style="width:10px;height:10px;border-radius:2px;background:#c8d8ec;display:inline-block;"></span>Baja / por confirmar</span>
+      </div>
+      <div style="position:relative;height:280px;"><canvas id="cGrupos"></canvas></div>
+    </div>
+    <div class="g2">
+      <div class="card">
+        <div class="card-title">Top 5 grupos · participaciones</div>
+        <table class="rt"><thead><tr><th>#</th><th>Grupo</th><th>Part.</th><th>Del total</th></tr></thead><tbody id="rankGrupos"></tbody></table>
+      </div>
+      <div class="card">
+        <div class="card-title">Tipo de evento y estado</div>
+        <div class="sb"><div class="sbh"><span class="sbn">Evento Institucional</span><span class="sbv">24 · 49%</span></div><div class="sbb"><div class="sbf" style="width:49%;background:#00205B;"></div></div></div>
+        <div class="sb"><div class="sbh"><span class="sbn">Eventos Jefatura Cultura</span><span class="sbv">15 · 31%</span></div><div class="sbb"><div class="sbf" style="width:31%;background:#00387b;"></div></div></div>
+        <div class="sb" style="margin-bottom:16px;"><div class="sbh"><span class="sbn">Evento Externo</span><span class="sbv">10 · 20%</span></div><div class="sbb"><div class="sbf" style="width:20%;background:#c8d8ec;"></div></div></div>
+        <div style="border-top:1px solid var(--borde);padding-top:12px;display:flex;gap:12px;flex-wrap:wrap;">
+          <div class="prog" style="margin:0;flex:1;"><span class="prog-label" style="font-size:11px;min-width:90px;">Completadas</span><div class="prog-track"><div class="prog-fill" style="width:55%;background:#1b5e20;"></div></div><span class="prog-num" style="color:#1b5e20;">27 · 55%</span></div>
+          <div class="prog" style="margin:0;flex:1;"><span class="prog-label" style="font-size:11px;min-width:90px;">Programadas</span><div class="prog-track"><div class="prog-fill" style="width:45%;background:#00387b;"></div></div><span class="prog-num">22 · 45%</span></div>
+        </div>
+        <div class="card-title" style="margin-top:1rem;">Solicitudes por dependencia</div>
+        <div style="position:relative;height:180px;"><canvas id="cDep"></canvas></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ESTUDIANTES -->
+  <div id="sub-estudiantes" class="subpanel">
+    <div class="g2">
+      <div class="card">
+        <div class="card-title">Inscritos por grupo · 444 estudiantes</div>
+        <div style="position:relative;height:310px;"><canvas id="cEstGrupo"></canvas></div>
+      </div>
+      <div class="card">
+        <div class="card-title">Inscritos por facultad</div>
+        <div style="position:relative;height:310px;"><canvas id="cFacultad"></canvas></div>
+      </div>
+    </div>
+    <div class="g2">
+      <div class="card">
+        <div class="card-title">Tabla por grupo</div>
+        <table class="rt"><thead><tr><th>Grupo</th><th>Est.</th><th>% del total</th></tr></thead><tbody id="tbGrupoEst"></tbody></table>
+      </div>
+      <div class="card">
+        <div class="card-title">Tabla por facultad</div>
+        <table class="rt"><thead><tr><th>Facultad</th><th>Est.</th><th>% del total</th></tr></thead><tbody id="tbFac"></tbody></table>
+      </div>
+    </div>
+  </div>
+
+  <!-- RENDIMIENTO -->
+  <div id="sub-academico" class="subpanel">
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:1rem;">
+      <div class="rango-card" style="background:var(--verdeL);border:1px solid #a5d6a7;">
+        <div style="font-family:'Playfair Display',serif;font-size:32px;font-weight:600;color:var(--verde);line-height:1;margin-bottom:4px;">13</div>
+        <div style="font-size:10px;text-transform:uppercase;letter-spacing:.07em;color:var(--verde);">Promedio ≥ 3.8</div>
+        <div style="font-size:11px;color:var(--gris);margin-top:3px;">Todos sobre la meta institucional</div>
+      </div>
+      <div class="rango-card" style="background:var(--azulP);border:1px solid var(--azulL);">
+        <div style="font-family:'Playfair Display',serif;font-size:32px;font-weight:600;color:var(--azul);line-height:1;margin-bottom:4px;">4.2</div>
+        <div style="font-size:10px;text-transform:uppercase;letter-spacing:.07em;color:var(--azul);">Promedio general</div>
+        <div style="font-size:11px;color:var(--gris);margin-top:3px;">0.4 pts sobre la meta (3.8)</div>
+      </div>
+      <div class="rango-card" style="background:var(--alertaPale);border:1px solid #f5d87a;">
+        <div style="font-family:'Playfair Display',serif;font-size:32px;font-weight:600;color:var(--alerta);line-height:1;margin-bottom:4px;">44</div>
+        <div style="font-size:10px;text-transform:uppercase;letter-spacing:.07em;color:var(--alerta);">Estudiantes · 3.4–3.8</div>
+        <div style="font-size:11px;color:var(--gris);margin-top:3px;">Zona de acompañamiento</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">Promedio APC 2026-1 · primer corte · vs. meta institucional (3.8)</div>
+      <div style="position:relative;height:290px;"><canvas id="cPromedios"></canvas></div>
+    </div>
+    <div class="g2">
+      <div class="card">
+        <div class="card-title">Ranking · comparado vs. meta (3.8)</div>
+        <table class="rt"><thead><tr><th>Grupo</th><th>Prom.</th><th>Nivel</th><th>vs. meta</th></tr></thead><tbody id="promBody"></tbody></table>
+      </div>
+      <div class="card">
+        <div class="card-title">Decisiones estratégicas</div>
+        <div style="display:flex;flex-direction:column;gap:9px;">
+          <div style="padding:11px 13px;background:var(--alertaPale);border-radius:8px;border-left:3px solid var(--oro);">
+            <div style="font-size:11px;font-weight:500;color:var(--alerta);margin-bottom:3px;">⚠ Acompañamiento prioritario</div>
+            <div style="font-size:11px;color:var(--gris);">44 estudiantes entre 3.4 y 3.8 — candidatos a intervención temprana desde Bienestar.</div>
+          </div>
+          <div style="padding:11px 13px;background:var(--verdeL);border-radius:8px;border-left:3px solid var(--verde);">
+            <div style="font-size:11px;font-weight:500;color:var(--verde);margin-bottom:3px;">✓ Progreso hacia la meta</div>
+            <div style="font-size:11px;color:var(--gris);">El promedio general de 4.2 supera la meta institucional de 3.8, lo que confirma que la coordinación va en la dirección correcta.</div>
+          </div>
+          <div style="padding:11px 13px;background:var(--azulP);border-radius:8px;border-left:3px solid var(--azul);">
+            <div style="font-size:11px;font-weight:500;color:var(--azul);margin-bottom:3px;">→ Próximo paso</div>
+            <div style="font-size:11px;color:var(--gris);">Actualizar con APC segundo corte para seguimiento longitudinal por grupo.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ASCUN -->
+  <div id="sub-ascun" class="subpanel">
+    <div class="ascun-banner">
+      <div>
+        <div style="font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,0.5);margin-bottom:6px;">Próximas semanas · 2026</div>
+        <div style="font-family:'Playfair Display',serif;font-size:20px;font-weight:600;color:#fff;margin-bottom:4px;">ASCUN Cultural 2026</div>
+        <div style="font-size:12px;color:rgba(255,255,255,0.6);">La Sabana representada por 6 grupos en competencia universitaria regional</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:2rem;flex-shrink:0;position:relative;z-index:1;">
+        <div class="a-stat"><div class="a-val">94</div><div class="a-lbl">Estudiantes</div></div>
+        <div class="a-div"></div>
+        <div class="a-stat"><div class="a-val">21%</div><div class="a-lbl">De los inscritos</div></div>
+        <div class="a-div"></div>
+        <div class="a-stat"><div class="a-val">4.1</div><div class="a-lbl">Su promedio</div></div>
+      </div>
+    </div>
+    <div class="g2">
+      <div class="card">
+        <div class="card-title">Grupos que nos representan</div>
+        <div style="display:flex;flex-direction:column;gap:8px;" id="ascunGrupos"></div>
+      </div>
+      <div class="card">
+        <div class="card-title">Promedio de los estudiantes ASCUN · APC 2026-1</div>
+        <div style="position:relative;height:260px;"><canvas id="cAscun"></canvas></div>
+      </div>
+    </div>
+    <div class="note verde" style="margin-top:.25rem;">El promedio de los 94 estudiantes que van a ASCUN (4.1) supera la meta institucional (3.8) en 0.3 puntos — evidencia de que se proyecta lo mejor del proceso cultural.</div>
+  </div>
+
+  <!-- LÍDERES -->
+  <div id="sub-lideres" class="subpanel">
+    <div class="g3" style="margin-bottom:1rem;">
+      <div class="card" style="margin-bottom:0;border-top:3px solid var(--azul);">
+        <div style="font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--gris);margin-bottom:8px;">Líderes de grupo</div>
+        <div style="font-family:'Playfair Display',serif;font-size:30px;font-weight:600;color:var(--azul);margin-bottom:4px;">14</div>
+        <div style="font-size:12px;color:var(--gris);line-height:1.5;">Voz activa entre estudiantes y Bienestar. Apoyan la planeación, promoción y articulación de la comunidad cultural.</div>
+      </div>
+      <div class="card" style="margin-bottom:0;border-top:3px solid var(--azul2);">
+        <div style="font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--gris);margin-bottom:8px;">Líderes en redes sociales</div>
+        <div style="font-family:'Playfair Display',serif;font-size:30px;font-weight:600;color:var(--azul2);margin-bottom:4px;">15</div>
+        <div style="font-size:12px;color:var(--gris);line-height:1.5;">Alinean los canales digitales de cada grupo con la identidad de marca de La Sabana.</div>
+      </div>
+      <div class="card" style="margin-bottom:0;border-top:3px solid var(--verde);">
+        <div style="font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--gris);margin-bottom:8px;">Portafolio institucional</div>
+        <div style="font-family:'Playfair Display',serif;font-size:30px;font-weight:600;color:var(--verde);margin-bottom:4px;">En construcción</div>
+        <div style="font-size:12px;color:var(--gris);line-height:1.5;">Construido colectivamente con los líderes. Disponible próximamente para uso oficial y difusión externa.</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">Los 14 líderes culturales · 2026-1</div>
+      <div class="lider-grid" id="liderGrid"></div>
+    </div>
+  </div>
+
+  <!-- INVENTARIO -->
+  <div id="sub-inventario" class="subpanel">
+
+    <!-- KPIs inventario -->
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:1rem;">
+      <div class="kpi-card"><div class="kpi-val">260</div><div class="kpi-lbl">Ítems registrados</div><div class="kpi-sub">Inventario total de Cultura</div></div>
+      <div class="kpi-card o"><div class="kpi-val o" style="font-size:22px;">151</div><div class="kpi-lbl">Con código pendiente</div><div class="kpi-sub">Sin código, dañado o vencido · enviado a Adquisiciones</div></div>
+      <div class="kpi-card v"><div class="kpi-val v">41</div><div class="kpi-lbl">Horas beca en Cultura</div><div class="kpi-sub">5 vinculados a Jóvenes a la E</div></div>
+      <div class="kpi-card m"><div class="kpi-val m">10</div><div class="kpi-lbl">Salas gestionadas</div><div class="kpi-sub">Campus central + Arena</div></div>
+    </div>
+
+    <div class="g2">
+      <div class="card">
+        <div class="card-title">Ítems por categoría · 260 en total</div>
+        <div style="position:relative;height:260px;"><canvas id="cInvCat"></canvas></div>
+      </div>
+      <div class="card">
+        <div class="card-title">Ítems por sala</div>
+        <div style="position:relative;height:260px;"><canvas id="cInvSala"></canvas></div>
+      </div>
+    </div>
+
+    <!-- Estado del código -->
+    <div class="g2">
+      <div class="card">
+        <div class="card-title">Estado de codificación del inventario</div>
+        <div style="display:flex;gap:10px;margin-bottom:14px;">
+          <div style="flex:1;background:var(--verdeL);border:1px solid #a5d6a7;border-radius:10px;padding:14px;text-align:center;">
+            <div style="font-family:'Playfair Display',serif;font-size:30px;font-weight:600;color:var(--verde);line-height:1;">109</div>
+            <div style="font-size:10px;color:var(--verde);text-transform:uppercase;letter-spacing:.07em;margin-top:4px;">Con código vigente</div>
+            <div style="font-size:11px;color:var(--gris);margin-top:3px;">42% del inventario</div>
+          </div>
+          <div style="flex:1;background:var(--alertaPale);border:1px solid #f5d87a;border-radius:10px;padding:14px;text-align:center;">
+            <div style="font-family:'Playfair Display',serif;font-size:30px;font-weight:600;color:var(--alerta);line-height:1;">151</div>
+            <div style="font-size:10px;color:var(--alerta);text-transform:uppercase;letter-spacing:.07em;margin-top:4px;">Código pendiente</div>
+            <div style="font-size:11px;color:var(--gris);margin-top:3px;">58% · enviado a Adquisiciones</div>
+          </div>
+        </div>
+        <div class="note oro">La revisión del inventario incluyó identificación de sala, estado actual y registro fotográfico de cada ítem. Los 151 elementos con código no registrado, dañado o vencido fueron remitidos a Adquisiciones para su regularización.</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Sistemas internos implementados con maestros</div>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <div style="display:flex;gap:12px;align-items:flex-start;padding:10px 13px;background:var(--azulP);border-radius:8px;">
+            <div style="width:28px;height:28px;border-radius:6px;background:var(--azul);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            </div>
+            <div><div style="font-size:12px;font-weight:500;color:var(--texto);margin-bottom:2px;">Gestión de inventario en salas</div><div style="font-size:11px;color:var(--gris);">Registro y seguimiento del estado de los instrumentos por sala.</div></div>
+          </div>
+          <div style="display:flex;gap:12px;align-items:flex-start;padding:10px 13px;background:var(--azulP);border-radius:8px;">
+            <div style="width:28px;height:28px;border-radius:6px;background:var(--azul);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            </div>
+            <div><div style="font-size:12px;font-weight:500;color:var(--texto);margin-bottom:2px;">Solicitudes de mantenimiento</div><div style="font-size:11px;color:var(--gris);">Canal formal para reportar instrumentos o equipos que requieren reparación.</div></div>
+          </div>
+          <div style="display:flex;gap:12px;align-items:flex-start;padding:10px 13px;background:var(--azulP);border-radius:8px;">
+            <div style="width:28px;height:28px;border-radius:6px;background:var(--azul);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            </div>
+            <div><div style="font-size:12px;font-weight:500;color:var(--texto);margin-bottom:2px;">Alquiler de salas para estudiantes</div><div style="font-size:11px;color:var(--gris);">Sistema de reserva para estudiantes que pertenecen a grupos representativos.</div></div>
+          </div>
+          <div style="display:flex;gap:12px;align-items:flex-start;padding:10px 13px;background:var(--azulP);border-radius:8px;">
+            <div style="width:28px;height:28px;border-radius:6px;background:var(--azul);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            </div>
+            <div><div style="font-size:12px;font-weight:500;color:var(--texto);margin-bottom:2px;">Control de acceso a salas</div><div style="font-size:11px;color:var(--gris);">Ingreso restringido a maestros — garantiza el cuidado y buen uso de los espacios y equipos.</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════
+     UNISABANA EXPERIENCE
+══════════════════════════ -->
+<div id="p-experience" class="panel">
+
+  <!-- 2 rasgos UX correctos -->
+  <div class="g2" style="margin-bottom:1rem;">
+    <div class="card">
+      <div class="card-title">Conexión con el entorno</div>
+      <div style="font-size:12px;color:var(--gris);line-height:1.6;margin-bottom:14px;">Los grupos representativos conectan al estudiante con realidades que van más allá del aula: audiencias reales, comunidades, otras universidades y el entorno cultural del país.</div>
+      <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:14px;">
+        <div style="display:flex;gap:10px;align-items:flex-start;padding:10px 12px;background:var(--azulP);border-radius:8px;">
+          <div style="width:6px;height:6px;border-radius:50%;background:var(--azul);margin-top:5px;flex-shrink:0;"></div>
+          <div style="font-size:12px;color:var(--texto);">Las 10 participaciones externas exponen a los grupos a audiencias y contextos distintos al campus</div>
+        </div>
+        <div style="display:flex;gap:10px;align-items:flex-start;padding:10px 12px;background:var(--azulP);border-radius:8px;">
+          <div style="width:6px;height:6px;border-radius:50%;background:var(--azul);margin-top:5px;flex-shrink:0;"></div>
+          <div style="font-size:12px;color:var(--texto);">Ancestros investiga comunidades regionales del país e integra ese aprendizaje en escena — aprendizaje haciendo con impacto cultural real</div>
+        </div>
+        <div style="display:flex;gap:10px;align-items:flex-start;padding:10px 12px;background:var(--azulP);border-radius:8px;">
+          <div style="width:6px;height:6px;border-radius:50%;background:var(--azul);margin-top:5px;flex-shrink:0;"></div>
+          <div style="font-size:12px;color:var(--texto);">ASCUN pone a los estudiantes frente a otras universidades — interacción con pares, jurados y gestores culturales de distintos contextos</div>
+        </div>
+        <div style="display:flex;gap:10px;align-items:flex-start;padding:10px 12px;background:var(--azulP);border-radius:8px;">
+          <div style="width:6px;height:6px;border-radius:50%;background:var(--azul);margin-top:5px;flex-shrink:0;"></div>
+          <div style="font-size:12px;color:var(--texto);">16 dependencias distintas solicitan grupos — la cultura cruza facultades, áreas administrativas y eventos institucionales de alto perfil</div>
+        </div>
+      </div>
+      <div class="note azul"><strong>Oportunidad:</strong> fortalecer retos experienciales en más grupos para que la conexión con el entorno sea intencional y documentada, no solo una consecuencia de las presentaciones.</div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Actitud humanizadora · el sello del modelo</div>
+      <div style="font-size:12px;color:var(--gris);line-height:1.6;margin-bottom:14px;">La práctica artística colectiva forma en sensibilidad, responsabilidad y propósito — dimensiones que no se trabajan en el aula tradicional y que son centrales a la formación integral de La Sabana.</div>
+      <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:14px;">
+        <div style="display:flex;gap:10px;align-items:flex-start;padding:10px 12px;background:var(--verdeL);border-radius:8px;">
+          <div style="width:6px;height:6px;border-radius:50%;background:var(--verde);margin-top:5px;flex-shrink:0;"></div>
+          <div style="font-size:12px;color:var(--texto);">Representar a la universidad genera conciencia de dignidad, responsabilidad colectiva y orgullo de pertenencia institucional</div>
+        </div>
+        <div style="display:flex;gap:10px;align-items:flex-start;padding:10px 12px;background:var(--verdeL);border-radius:8px;">
+          <div style="width:6px;height:6px;border-radius:50%;background:var(--verde);margin-top:5px;flex-shrink:0;"></div>
+          <div style="font-size:12px;color:var(--texto);">La danza folclórica, el teatro y la música popular desarrollan sensibilidad cultural y comprensión de diversas realidades sociales del país</div>
+        </div>
+        <div style="display:flex;gap:10px;align-items:flex-start;padding:10px 12px;background:var(--verdeL);border-radius:8px;">
+          <div style="width:6px;height:6px;border-radius:50%;background:var(--verde);margin-top:5px;flex-shrink:0;"></div>
+          <div style="font-size:12px;color:var(--texto);">Los 14 líderes culturales asumen un rol de servicio hacia su grupo y la comunidad — formación con propósito orientada al bien común</div>
+        </div>
+        <div style="display:flex;gap:10px;align-items:flex-start;padding:10px 12px;background:var(--verdeL);border-radius:8px;">
+          <div style="width:6px;height:6px;border-radius:50%;background:var(--verde);margin-top:5px;flex-shrink:0;"></div>
+          <div style="font-size:12px;color:var(--texto);">El promedio 4.2 evidencia que el compromiso artístico convive con la excelencia académica — el estudiante aprende a gestionar múltiples responsabilidades con ética</div>
+        </div>
+      </div>
+      <div class="note verde"><strong>Oportunidad:</strong> incorporar espacios de reflexión ética y cultural en los ensayos para que la actitud humanizadora sea explícita, no solo implícita en la práctica.</div>
+    </div>
+  </div>
+
+  <!-- Argumento comunidad y permanencia -->
+  <div class="card" style="margin-bottom:1rem;">
+    <div class="card-title">Cultura, comunidad y permanencia · argumento institucional</div>
+    <div class="g2" style="align-items:start;">
+      <div>
+        <div style="font-size:13px;color:var(--texto);line-height:1.7;border-left:3px solid var(--azul);padding-left:14px;margin-bottom:6px;font-style:italic;">"Ser parte de un grupo que trabaja hacia un objetivo común fomenta la creación de una identidad grupal. La confianza de la Universidad en sus habilidades impulsa a los miembros a autoexigirse — el tiempo y la disciplina requeridos no se constituyen como un sacrificio."</div>
+        <div style="font-size:10px;color:var(--gris);padding-left:14px;margin-bottom:12px;">— Informe del Estudio Cualitativo de la Dirección, 2025</div>
+        <div style="font-size:11px;color:var(--gris);">Los grupos representativos generan un vínculo institucional que va más allá del aula. Ese sentido de pertenencia y responsabilidad compartida es un <strong>factor protector frente a la deserción</strong>: el estudiante permanece porque tiene un lugar, un equipo y una misión dentro de la universidad.</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <div style="padding:12px 14px;background:var(--azulP);border-radius:8px;border-left:3px solid var(--azul);">
+          <div style="font-size:11px;font-weight:500;color:var(--azul);margin-bottom:3px;">Identidad grupal</div>
+          <div style="font-size:11px;color:var(--gris);">Representar a La Sabana genera orgullo de pertenencia y compromiso con la institución.</div>
+        </div>
+        <div style="padding:12px 14px;background:var(--verdeL);border-radius:8px;border-left:3px solid var(--verde);">
+          <div style="font-size:11px;font-weight:500;color:var(--verde);margin-bottom:3px;">Regulación del estrés</div>
+          <div style="font-size:11px;color:var(--gris);">La práctica artística colectiva genera rutina, contención emocional y sentido de logro progresivo — factores protectores del bienestar.</div>
+        </div>
+        <div style="padding:12px 14px;background:var(--oroPale);border-radius:8px;border-left:3px solid var(--oro);">
+          <div style="font-size:11px;font-weight:500;color:var(--alerta);margin-bottom:3px;">Disciplina como elección</div>
+          <div style="font-size:11px;color:var(--gris);">El esfuerzo que demandan los ensayos no se vive como carga sino como inversión en algo propio — un mecanismo de autoexigencia voluntaria.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- HIX -->
+  <div class="g2" style="margin-bottom:1rem;">
+    <div class="card">
+      <div class="card-title">Estado HIX · 8 criterios de experiencia de alto impacto</div>
+      <div style="display:flex;gap:10px;margin-bottom:14px;">
+        <div style="flex:1;background:var(--verdeL);border:1px solid #a5d6a7;border-radius:10px;padding:12px;text-align:center;">
+          <div style="font-family:'Playfair Display',serif;font-size:28px;font-weight:600;color:var(--verde);line-height:1;">1</div>
+          <div style="font-size:10px;color:var(--verde);text-transform:uppercase;letter-spacing:.07em;margin-top:3px;">Cumple HIX</div>
+          <div style="font-size:11px;color:var(--gris);margin-top:2px;font-weight:500;">Ancestros</div>
+        </div>
+        <div style="flex:1;background:var(--alertaPale);border:1px solid #f5d87a;border-radius:10px;padding:12px;text-align:center;">
+          <div style="font-family:'Playfair Display',serif;font-size:28px;font-weight:600;color:var(--alerta);line-height:1;">14</div>
+          <div style="font-size:10px;color:var(--alerta);text-transform:uppercase;letter-spacing:.07em;margin-top:3px;">En desarrollo</div>
+          <div style="font-size:11px;color:var(--gris);margin-top:2px;">Parcialmente HIX</div>
+        </div>
+      </div>
+      <div style="font-size:11px;font-weight:500;color:var(--texto);margin-bottom:8px;">Nivel de cumplimiento por criterio</div>
+      <div style="display:flex;flex-direction:column;gap:5px;" id="hixBars"></div>
+      <div class="note azul" style="margin-top:12px;">El objetivo <strong>no es que todos los grupos sean HIX</strong>, sino que este marco nos inspire para tomar acciones concretas que eleven la calidad formativa de la experiencia cultural.</div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Brechas HIX · acciones concretas</div>
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <div style="padding:11px 13px;background:var(--alertaPale);border-radius:8px;border-left:3px solid var(--oro);">
+          <div style="font-size:11px;font-weight:500;color:var(--alerta);margin-bottom:3px;">HIX 3 · Interacciones significativas</div>
+          <div style="font-size:11px;color:var(--gris);">Los grupos interactúan principalmente con su maestro. <strong>Acción:</strong> ampliar contacto con comunidades, jurados y otras universidades.</div>
+        </div>
+        <div style="padding:11px 13px;background:var(--alertaPale);border-radius:8px;border-left:3px solid var(--oro);">
+          <div style="font-size:11px;font-weight:500;color:var(--alerta);margin-bottom:3px;">HIX 4 · Diversidad de contextos</div>
+          <div style="font-size:11px;color:var(--gris);">Solo Ancestros visita comunidades regionales. <strong>Acción:</strong> replicar ese modelo en otros grupos progresivamente.</div>
+        </div>
+        <div style="padding:11px 13px;background:var(--alertaPale);border-radius:8px;border-left:3px solid var(--oro);">
+          <div style="font-size:11px;font-weight:500;color:var(--alerta);margin-bottom:3px;">HIX 6 · Reflexión guiada</div>
+          <div style="font-size:11px;color:var(--gris);">Sin mecanismos de reflexión post-sesión. <strong>Acción:</strong> implementar rúbricas breves después de cada ensayo o evento.</div>
+        </div>
+        <div style="padding:11px 13px;background:var(--alertaPale);border-radius:8px;border-left:3px solid var(--oro);">
+          <div style="font-size:11px;font-weight:500;color:var(--alerta);margin-bottom:3px;">HIX 7 · Conexión con retos reales</div>
+          <div style="font-size:11px;color:var(--gris);">Aprendizajes sin conexión con el entorno. <strong>Acción:</strong> vincular presentaciones a proyectos sociales o comunitarios.</div>
+        </div>
+      </div>
+      <div class="note verde" style="margin-top:.75rem;"><strong>Ancestros como modelo:</strong> 4–6 h/semana · cronograma documentado · investigación regional · feedback de jurados · demostración pública.</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ══════════════════════════
+     MODELO DE BIENESTAR
+══════════════════════════ -->
+<div id="p-bienestar" class="panel">
+
+  <!-- 6 dimensiones -->
+  <div class="card" style="margin-bottom:1rem;">
+    <div class="card-title">6 dimensiones del ser humano · cómo la cultura las activa</div>
+    <div class="g3">
+      <div class="dim-card v" style="margin-bottom:0;">
+        <div style="font-size:10px;text-transform:uppercase;letter-spacing:.09em;color:var(--verde);margin-bottom:5px;">Social-cultural</div>
+        <div style="font-size:12px;font-weight:500;color:var(--texto);margin-bottom:4px;">Contribución principal</div>
+        <div style="font-size:11px;color:var(--gris);line-height:1.5;">Los grupos son espacios de encuentro, identidad colectiva y sentido de pertenencia institucional.</div>
+      </div>
+      <div class="dim-card" style="margin-bottom:0;">
+        <div style="font-size:10px;text-transform:uppercase;letter-spacing:.09em;color:var(--azul);margin-bottom:5px;">Psicológica-afectiva</div>
+        <div style="font-size:12px;font-weight:500;color:var(--texto);margin-bottom:4px;">Bienestar emocional</div>
+        <div style="font-size:11px;color:var(--gris);line-height:1.5;">La práctica artística ofrece expresión, contención emocional y desarrollo de identidad personal.</div>
+      </div>
+      <div class="dim-card o" style="margin-bottom:0;">
+        <div style="font-size:10px;text-transform:uppercase;letter-spacing:.09em;color:var(--oro);margin-bottom:5px;">Cognitiva-intelectual</div>
+        <div style="font-size:12px;font-weight:500;color:var(--texto);margin-bottom:4px;">El promedio 4.2 lo confirma</div>
+        <div style="font-size:11px;color:var(--gris);line-height:1.5;">La cultura estimula disciplina y capacidades cognitivas — no las obstaculiza.</div>
+      </div>
+      <div class="dim-card" style="margin-bottom:0;">
+        <div style="font-size:10px;text-transform:uppercase;letter-spacing:.09em;color:var(--azul);margin-bottom:5px;">Física-biológica</div>
+        <div style="font-size:12px;font-weight:500;color:var(--texto);margin-bottom:4px;">Movimiento y vitalidad</div>
+        <div style="font-size:11px;color:var(--gris);line-height:1.5;">Danza, percusión y teatro involucran el cuerpo activamente. 208 estudiantes en grupos de movimiento.</div>
+      </div>
+      <div class="dim-card v" style="margin-bottom:0;">
+        <div style="font-size:10px;text-transform:uppercase;letter-spacing:.09em;color:var(--verde);margin-bottom:5px;">Ética-moral</div>
+        <div style="font-size:12px;font-weight:500;color:var(--texto);margin-bottom:4px;">Compromiso y valores</div>
+        <div style="font-size:11px;color:var(--gris);line-height:1.5;">Representar a la institución forma responsabilidad, disciplina y orgullo de pertenencia.</div>
+      </div>
+      <div class="dim-card o" style="margin-bottom:0;">
+        <div style="font-size:10px;text-transform:uppercase;letter-spacing:.09em;color:var(--oro);margin-bottom:5px;">Liderazgo transformador</div>
+        <div style="font-size:12px;font-weight:500;color:var(--texto);margin-bottom:4px;">Eje formativo del modelo</div>
+        <div style="font-size:11px;color:var(--gris);line-height:1.5;">29 líderes culturales (14 de grupo + 15 de redes) desarrollan habilidades personales, sociales y de gestión — el eje formativo en acción.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3 principios -->
+  <div class="card">
+    <div class="card-title">3 principios de cuidado · cómo cultura los activa</div>
+    <div class="g3">
+      <div style="padding:14px;background:var(--azulP);border-radius:10px;border-top:3px solid var(--azul);">
+        <div style="font-size:11px;font-weight:500;color:var(--azul);margin-bottom:8px;">Cuidado de sí mismo</div>
+        <div style="font-size:11px;color:var(--gris);line-height:1.6;">La práctica artística exige constancia, autoconciencia y gestión del tiempo — el estudiante aprende a gobernar su propio proceso sin que nadie lo obligue. Mantener un promedio de 4.2 mientras se ensaya semanalmente es evidencia concreta de autogobierno. Además, la rutina del ensayo actúa como regulador emocional: genera sentido de logro progresivo y contención en momentos de alta carga académica.</div>
+      </div>
+      <div style="padding:14px;background:var(--verdeL);border-radius:10px;border-top:3px solid var(--verde);">
+        <div style="font-size:11px;font-weight:500;color:var(--verde);margin-bottom:8px;">Cuidado del otro</div>
+        <div style="font-size:11px;color:var(--gris);line-height:1.6;">Un grupo representativo es, antes que todo, una comunidad: sus miembros dependen entre sí para que el resultado sea posible. Esa interdependencia forma empatía, escucha y responsabilidad hacia el colectivo. Los 14 líderes culturales institucionalizan ese cuidado — son el puente entre los integrantes y Bienestar, y aseguran que nadie quede invisible dentro de la comunidad cultural. Los 15 líderes de redes, por su parte, cuidan la imagen y la voz de cada grupo hacia afuera.</div>
+      </div>
+      <div style="padding:14px;background:var(--oroPale);border-radius:10px;border-top:3px solid var(--oro);">
+        <div style="font-size:11px;font-weight:500;color:var(--alerta);margin-bottom:8px;">Cuidado del entorno</div>
+        <div style="font-size:11px;color:var(--gris);line-height:1.6;">10 de 49 participaciones ocurren fuera del campus — cada presentación externa es un acto de proyección de la identidad y los valores de La Sabana hacia la comunidad regional. Ancestros va más lejos: interactúa directamente con comunidades locales del país, rescatando patrimonio cultural e integrándolo a su práctica. Los líderes de redes cuidan la presencia digital institucional, asegurando que la identidad de marca se preserve en todos los canales de los grupos.</div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /p-bienestar -->
+
+<!-- ══════════════════════════
+     ESTRATEGIA
+══════════════════════════ -->
+<div id="p-estrategia" class="panel">
+
+  <!-- Estrategia central -->
+  <div style="background:linear-gradient(135deg,#00205B,#00387b);border-radius:var(--r);padding:2rem 2.25rem;margin-bottom:1.5rem;position:relative;overflow:hidden;">
+    <div style="position:absolute;right:-50px;top:-50px;width:220px;height:220px;border-radius:50%;border:45px solid rgba(255,255,255,0.04);"></div>
+    <div style="position:relative;z-index:1;">
+      <div style="font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,0.5);margin-bottom:10px;">Estrategia 2026 · Coordinación de Desarrollo Cultural</div>
+      <div style="font-family:'Playfair Display',serif;font-size:22px;font-weight:600;color:#fff;line-height:1.3;max-width:680px;">Consolidar los grupos representativos como espacios de formación humana con impacto medible en rendimiento académico, permanencia estudiantil y experiencia universitaria.</div>
+    </div>
+  </div>
+
+  <!-- 4 líneas de acción -->
+
+  <!-- LÍNEA 1: Medición de impacto -->
+  <div class="card">
+    <div style="display:flex;align-items:flex-start;gap:1.25rem;">
+      <div style="width:42px;height:42px;border-radius:10px;background:var(--azulP);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#00205B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+      </div>
+      <div style="flex:1;">
+        <div style="font-size:10px;text-transform:uppercase;letter-spacing:.12em;color:var(--azul);margin-bottom:4px;">Línea 1</div>
+        <div style="font-family:'Playfair Display',serif;font-size:17px;font-weight:500;color:var(--texto);margin-bottom:6px;">Medición de impacto</div>
+        <div style="font-size:12px;color:var(--gris);line-height:1.6;margin-bottom:1rem;">Hoy la coordinación se mide principalmente con eventos y asistencia. El objetivo es construir una cadena clara entre inversión → experiencia → formación → impacto institucional, con tres niveles de indicadores que permitan tomar decisiones con evidencia.</div>
+
+        <div class="g3" style="margin-bottom:1rem;">
+          <div style="background:var(--bg);border:1px solid var(--borde);border-radius:10px;padding:12px 14px;">
+            <div style="font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--gris);margin-bottom:6px;">Nivel 1 · Actividad</div>
+            <div style="font-size:11px;color:var(--texto);line-height:1.55;">Estudiantes inscritos, participaciones, eventos. Ya se tienen — son útiles para gestión interna.</div>
+          </div>
+          <div style="background:var(--azulP);border:1px solid var(--azulL);border-radius:10px;padding:12px 14px;">
+            <div style="font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--azul);margin-bottom:6px;">Nivel 2 · Experiencia</div>
+            <div style="font-size:11px;color:var(--texto);line-height:1.55;">Horas de práctica, contactos con comunidades externas, grupos con plan documentado, porcentaje con reflexión guiada.</div>
+          </div>
+          <div style="background:var(--verdeL);border:1px solid #a5d6a7;border-radius:10px;padding:12px 14px;">
+            <div style="font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--verde);margin-bottom:6px;">Nivel 3 · Impacto formativo</div>
+            <div style="font-size:11px;color:var(--texto);line-height:1.55;">Promedio de grupos vs. promedio general de la universidad. Tasa de permanencia de los 444 estudiantes vs. resto de población.</div>
+          </div>
+        </div>
+
+        <div style="background:var(--alertaPale);border-left:3px solid var(--oro);border-radius:var(--rsm);padding:.85rem 1rem;">
+          <div style="font-size:11px;font-weight:500;color:var(--alerta);margin-bottom:3px;">🎯 Acción concreta</div>
+          <div style="font-size:11px;color:var(--gris);line-height:1.55;">Identificar e implementar los indicadores de Nivel 2 y 3 para el semestre 2026-2. El dato de tasa de permanencia de los 444 estudiantes frente a la población general es el indicador de impacto más estratégico disponible.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LÍNEA 2: Formación de maestros -->
+  <div class="card">
+    <div style="display:flex;align-items:flex-start;gap:1.25rem;">
+      <div style="width:42px;height:42px;border-radius:10px;background:var(--verdeL);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1b5e20" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      </div>
+      <div style="flex:1;">
+        <div style="font-size:10px;text-transform:uppercase;letter-spacing:.12em;color:var(--verde);margin-bottom:4px;">Línea 2</div>
+        <div style="font-family:'Playfair Display',serif;font-size:17px;font-weight:500;color:var(--texto);margin-bottom:6px;">Formación de maestros</div>
+        <div style="font-size:12px;color:var(--gris);line-height:1.6;margin-bottom:1rem;">Los directores de grupo son maestros que, además de su práctica artística, deben entender el marco formativo en el que opera su trabajo: el Modelo de Bienestar y UniSabana Experience. El análisis de los grupos muestra que los criterios formativos que más faltan dependen directamente de decisiones del director, no del estudiante.</div>
+
+        <div class="g2" style="margin-bottom:1rem;">
+          <div>
+            <div style="font-size:11px;font-weight:500;color:var(--texto);margin-bottom:8px;">Estructura de la jornada</div>
+            <div style="display:flex;flex-direction:column;gap:6px;">
+              <div style="display:flex;gap:10px;align-items:flex-start;">
+                <div style="width:22px;height:22px;border-radius:50%;background:var(--azul);color:#fff;font-size:10px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;">1</div>
+                <div style="font-size:11px;color:var(--gris);line-height:1.5;"><strong style="color:var(--texto);">Comprensión compartida</strong> — qué es el Modelo de Bienestar y Experience, y qué papel juega el director en él. Cada maestro ve evaluado su propio grupo.</div>
+              </div>
+              <div style="display:flex;gap:10px;align-items:flex-start;">
+                <div style="width:22px;height:22px;border-radius:50%;background:var(--azul);color:#fff;font-size:10px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;">2</div>
+                <div style="font-size:11px;color:var(--gris);line-height:1.5;"><strong style="color:var(--texto);">Rediseño práctico</strong> — cada director toma su cronograma e identifica dónde puede insertar reflexión, contacto externo o conexión con un reto real. Contextualizado por grupo.</div>
+              </div>
+              <div style="display:flex;gap:10px;align-items:flex-start;">
+                <div style="width:22px;height:22px;border-radius:50%;background:var(--azul);color:#fff;font-size:10px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;">3</div>
+                <div style="font-size:11px;color:var(--gris);line-height:1.5;"><strong style="color:var(--texto);">Compromisos medibles</strong> — cada director sale con 2-3 acciones concretas para el semestre, con indicadores de seguimiento.</div>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div style="font-size:11px;font-weight:500;color:var(--texto);margin-bottom:8px;">Indicadores de seguimiento</div>
+            <div style="display:flex;flex-direction:column;gap:6px;">
+              <div style="padding:9px 12px;background:var(--bg);border-radius:8px;border-left:2px solid var(--verde);font-size:11px;color:var(--gris);">% de directores con plan semestral documentado</div>
+              <div style="padding:9px 12px;background:var(--bg);border-radius:8px;border-left:2px solid var(--verde);font-size:11px;color:var(--gris);">% de grupos con al menos un contacto externo en el semestre</div>
+              <div style="padding:9px 12px;background:var(--bg);border-radius:8px;border-left:2px solid var(--verde);font-size:11px;color:var(--gris);">% de grupos con mecanismo de reflexión implementado</div>
+            </div>
+          </div>
+        </div>
+
+        <div style="background:var(--alertaPale);border-left:3px solid var(--oro);border-radius:var(--rsm);padding:.85rem 1rem;">
+          <div style="font-size:11px;font-weight:500;color:var(--alerta);margin-bottom:3px;">🎯 Acción concreta</div>
+          <div style="font-size:11px;color:var(--gris);line-height:1.55;">Programar jornada de apertura de semestre 2026-2 con todos los directores. Seguimiento a mitad de semestre con revisión de compromisos. La jornada debe ser experiencial — no una charla sobre el modelo.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LÍNEA 3: Retos experienciales -->
+  <div class="card">
+    <div style="display:flex;align-items:flex-start;gap:1.25rem;">
+      <div style="width:42px;height:42px;border-radius:10px;background:var(--oroPale);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#b8860b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+      </div>
+      <div style="flex:1;">
+        <div style="font-size:10px;text-transform:uppercase;letter-spacing:.12em;color:var(--oro);margin-bottom:4px;">Línea 3</div>
+        <div style="font-family:'Playfair Display',serif;font-size:17px;font-weight:500;color:var(--texto);margin-bottom:6px;">Retos experienciales</div>
+        <div style="font-size:12px;color:var(--gris);line-height:1.6;margin-bottom:1rem;">Articular la práctica artística a necesidades reales de comunidades, facultades y el entorno — de modo que el grupo use su arte para responder a un problema concreto y esa respuesta sea evaluable. No se trata de que todos los grupos hagan lo mismo, sino de abrir posibilidades según el perfil de cada uno.</div>
+
+        <!-- Ancestros como modelo -->
+        <div style="background:var(--azulP);border:1px solid var(--azulL);border-radius:10px;padding:14px 16px;margin-bottom:1rem;">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+            <div style="width:8px;height:8px;border-radius:50%;background:var(--azul);flex-shrink:0;"></div>
+            <div style="font-size:11px;font-weight:500;color:var(--azul);">Referente: Ancestros · Danza Folclórica</div>
+          </div>
+          <div style="font-size:11px;color:var(--gris);line-height:1.6;">Ancestros visita regiones del país para investigar las danzas tradicionales de cada zona, interactuando directamente con comunidades locales, casas de la cultura y gestores culturales. Ese proceso investigativo se traduce en una coreografía que se presenta en ASCUN. El reto es real, el resultado es público y medible. Este es el modelo a escalar.</div>
+        </div>
+
+        <div style="font-size:11px;font-weight:500;color:var(--texto);margin-bottom:8px;">Posibilidades por grupo</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:1rem;">
+          <div style="padding:10px 13px;background:var(--bg);border-radius:8px;border-left:2px solid var(--azul);">
+            <div style="font-size:11px;font-weight:500;color:var(--texto);margin-bottom:3px;">Teatro</div>
+            <div style="font-size:11px;color:var(--gris);">Crear una obra sobre salud mental universitaria con Psicología — intervención de bienvenida para primer semestre.</div>
+          </div>
+          <div style="padding:10px 13px;background:var(--bg);border-radius:8px;border-left:2px solid var(--azul);">
+            <div style="font-size:11px;font-weight:500;color:var(--texto);margin-bottom:3px;">Saoko · Génesis</div>
+            <div style="font-size:11px;color:var(--gris);">Integrar identidad cultural y contexto detrás del repertorio de danza — inspirado en el modelo de Ancestros: que cada montaje tenga una historia y una comunidad detrás.</div>
+          </div>
+          <div style="padding:10px 13px;background:var(--bg);border-radius:8px;border-left:2px solid var(--azul);">
+            <div style="font-size:11px;font-weight:500;color:var(--texto);margin-bottom:3px;">Coro · OSUS</div>
+            <div style="font-size:11px;color:var(--gris);">Formalizar el acercamiento a geriátricos como proyecto semestral con medición de impacto en humanización.</div>
+          </div>
+          <div style="padding:10px 13px;background:var(--bg);border-radius:8px;border-left:2px solid var(--azul);">
+            <div style="font-size:11px;font-weight:500;color:var(--texto);margin-bottom:3px;">Todos los grupos</div>
+            <div style="font-size:11px;color:var(--gris);">Banco de retos disponibles — alianzas con facultades, municipio y organizaciones cercanas para que cada director elija según su contexto.</div>
+          </div>
+        </div>
+
+        <div style="background:var(--alertaPale);border-left:3px solid var(--oro);border-radius:var(--rsm);padding:.85rem 1rem;">
+          <div style="font-size:11px;font-weight:500;color:var(--alerta);margin-bottom:3px;">🎯 Acción concreta</div>
+          <div style="font-size:11px;color:var(--gris);line-height:1.55;">Construir un banco de retos experienciales para el semestre 2026-2: mapear alianzas disponibles con facultades, el municipio de Chía y organizaciones del entorno. Presentarlo a los directores en la jornada de formación para que cada grupo adopte al menos uno.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LÍNEA 4: Seguimiento al estudiante -->
+  <div class="card">
+    <div style="display:flex;align-items:flex-start;gap:1.25rem;">
+      <div style="width:42px;height:42px;border-radius:10px;background:#e8f5e9;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1b5e20" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+      </div>
+      <div style="flex:1;">
+        <div style="font-size:10px;text-transform:uppercase;letter-spacing:.12em;color:var(--verde);margin-bottom:4px;">Línea 4</div>
+        <div style="font-family:'Playfair Display',serif;font-size:17px;font-weight:500;color:var(--texto);margin-bottom:6px;">Seguimiento al estudiante</div>
+        <div style="font-size:12px;color:var(--gris);line-height:1.6;margin-bottom:1rem;">Promedio, permanencia y bienestar como variables que se rastrean semestre a semestre — no como foto estática sino como seguimiento longitudinal. El objetivo es poder demostrar el efecto real de la cultura en el recorrido universitario del estudiante.</div>
+
+        <div class="g2" style="margin-bottom:1rem;">
+          <div>
+            <div style="font-size:11px;font-weight:500;color:var(--texto);margin-bottom:8px;">Rendimiento académico</div>
+            <div style="display:flex;flex-direction:column;gap:6px;">
+              <div style="padding:9px 12px;background:var(--bg);border-radius:8px;border-left:2px solid var(--azul);font-size:11px;color:var(--gris);">Seguimiento por corte (APC 1, 2, final) por grupo — no solo el promedio sino la evolución.</div>
+              <div style="padding:9px 12px;background:var(--bg);border-radius:8px;border-left:2px solid var(--azul);font-size:11px;color:var(--gris);">Cruzar los 44 estudiantes en zona de acompañamiento (3.4–3.8) con sus grupos para priorizar intervención.</div>
+              <div style="padding:9px 12px;background:var(--bg);border-radius:8px;border-left:2px solid var(--azul);font-size:11px;color:var(--gris);">Comparar promedio de los 444 vs. promedio general de la universidad — el dato más estratégico disponible.</div>
+            </div>
+          </div>
+          <div>
+            <div style="font-size:11px;font-weight:500;color:var(--texto);margin-bottom:8px;">Bienestar y permanencia</div>
+            <div style="display:flex;flex-direction:column;gap:6px;">
+              <div style="padding:9px 12px;background:var(--bg);border-radius:8px;border-left:2px solid var(--verde);font-size:11px;color:var(--gris);"><strong>Permanencia en el grupo</strong> semestre a semestre: un estudiante que renueva elige quedarse — bienestar percibido.</div>
+              <div style="padding:9px 12px;background:var(--bg);border-radius:8px;border-left:2px solid var(--verde);">
+                <div style="font-size:11px;font-weight:500;color:var(--texto);margin-bottom:5px;">Encuesta de pertenencia y bienestar · inicio y fin de semestre</div>
+                <div style="display:flex;flex-direction:column;gap:4px;">
+                  <div style="font-size:10px;color:var(--gris);padding:4px 0;border-bottom:1px solid var(--borde);">¿Sientes que el grupo es un espacio donde puedes expresarte libremente?</div>
+                  <div style="font-size:10px;color:var(--gris);padding:4px 0;border-bottom:1px solid var(--borde);">¿Participar en el grupo te ha ayudado a sentirte más parte de la universidad?</div>
+                  <div style="font-size:10px;color:var(--gris);padding:4px 0;border-bottom:1px solid var(--borde);">¿El grupo te ha apoyado en momentos de estrés o dificultad académica?</div>
+                  <div style="font-size:10px;color:var(--gris);padding:4px 0;">¿Recomendarías a otro estudiante participar en un grupo representativo?</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div style="background:var(--alertaPale);border-left:3px solid var(--oro);border-radius:var(--rsm);padding:.85rem 1rem;">
+          <div style="font-size:11px;font-weight:500;color:var(--alerta);margin-bottom:3px;">🎯 Acción concreta</div>
+          <div style="font-size:11px;color:var(--gris);line-height:1.55;">Diseñar y aplicar la encuesta de pertenencia y bienestar al inicio del semestre 2026-2. Construir el tablero de seguimiento longitudinal con cuatro indicadores por grupo: promedio APC, permanencia en el grupo, participaciones externas y criterios formativos cumplidos.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</main>
+
+<footer class="footer">
+  <div class="footer-l"><strong>Santiago Bedoya</strong> · Coordinador de Desarrollo Cultural · santiago.bedoya@unisabana.edu.co · Edif. A5</div>
+  <div class="footer-r">Dirección de Bienestar y Experiencia del Estudiante · 2026-1</div>
+</footer>
+
+<script>
+/* ── DATOS Y GRÁFICOS ── */
+
+const A1='#00205B',A2='#00387b',AL='#c8d8ec',VE='#1b5e20',OR='#b8860b';
+const META=3.8, REF_A=4.1;
+
+/* ── DATOS ── */
+const GD=[
+  {l:'Puente Rojo',v:4},{l:'Tuna Femenina',v:4},{l:'Coro',v:7},{l:'Teatro',v:3},
+  {l:'USBand',v:4},{l:'Ósus',v:4},{l:'Ensamble',v:1},{l:'Tuna Masculina',v:5},
+  {l:'Ancestros',v:10},{l:'Urbano',v:3},{l:'Saoko',v:5},{l:'Punto Rock',v:3},
+  {l:'Repercusión',v:4},{l:'Acomp. Saxofón',v:5,x:true},
+  {l:'Fusión',v:3},{l:'Parranda',v:5},{l:'Entre Mares',v:2},
+];
+const gc=v=>v>=5?A1:v>=3?A2:AL;
+
+const PD=[
+  {g:'Urbano',p:4.3},{g:'Fusión',p:4.2},{g:'Ósus',p:4.19},{g:'Coro',p:4.16},
+  {g:'Punto Rock',p:4.13},{g:'Teatro',p:4.1},{g:'Parranda',p:4.1},
+  {g:'Ancestros',p:4.08},{g:'USBand',p:4.06},{g:'Puente Rojo',p:4.05},
+  {g:'Tuna Masc.',p:4.03},{g:'Tuna Fem.',p:4.01},{g:'Entre Mares',p:3.87},
+];
+const EG=[
+  {g:'Saoko: Salsa y Bachata',e:87},{g:'Génesis: Danza Urbana',e:69},
+  {g:'Ancestros: Danza Folclórica',e:52},{g:'Las Botas del Gato: Teatro',e:46},
+  {g:'Coro',e:35},{g:'OSUS: Preorquesta Sinfónica',e:24},
+  {g:'Punto Rock',e:20},{g:'Fusión',e:20},{g:'Tuna Femenina',e:17},
+  {g:'USBand',e:15},{g:'Tuna Masculina',e:15},{g:'Parranda en La Sabana',e:12},
+  {g:'OSUS: Violín, Viola y Cello',e:9},{g:'Puente Rojo',e:9},
+  {g:'Repercusión',e:7},{g:'Entre Mares',e:7},
+];
+const FAC=[
+  {f:'Comunicación',e:118},{f:'Ingeniería',e:100},{f:'Adm. y Gastronomía',e:86},
+  {f:'Cs. Comportamiento',e:36},{f:'Cs. Vida y Bienestar',e:36},{f:'Alumni',e:29},
+  {f:'Est. Jurídicos',e:24},{f:'Medicina',e:15},{f:'Educación',e:11},{f:'Filosofía',e:7},
+];
+
+/* ── BUILD CHARTS (lazy) ── */
+function buildCharts(id){
+  if(id==='grupos'){
+    new Chart(document.getElementById('cGrupos'),{type:'bar',data:{labels:GD.map(d=>d.l),datasets:[{data:GD.map(d=>d.v),backgroundColor:GD.map(d=>gc(d.v)),borderRadius:5,borderSkipped:false}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>' '+c.parsed.y+' participaciones'}}},scales:{x:{ticks:{font:{size:9},maxRotation:52,autoSkip:false},grid:{display:false}},y:{beginAtZero:true,ticks:{stepSize:2,font:{size:11}},grid:{color:'rgba(0,32,91,0.04)'}}}}});
+    new Chart(document.getElementById('cDep'),{type:'bar',data:{labels:['Admis.','Asamblea','Asoc.A.','Aspren','Bienestar','Currículo','Dir.Tec.','F.Cs.Vida','F.Educ.','F.Est.Jur.','F.Ing.','Fonsabana','Forum','Port.P.','Protocolo','Rel.Int.'],datasets:[{data:[1,1,1,1,19,1,1,4,1,2,3,1,9,1,1,2],backgroundColor:[A2,A2,A2,A2,A1,A2,A2,A2,A2,A2,A2,A2,A1,A2,A2,A2],borderRadius:4,borderSkipped:false}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>' '+c.parsed.y+' solicitudes'}}},scales:{x:{ticks:{font:{size:8},maxRotation:50,autoSkip:false},grid:{display:false}},y:{beginAtZero:true,ticks:{stepSize:5,font:{size:10}},grid:{color:'rgba(0,32,91,0.04)'}}}}});
+  }
+  if(id==='estudiantes'){
+    new Chart(document.getElementById('cEstGrupo'),{type:'bar',data:{labels:EG.map(d=>d.g),datasets:[{data:EG.map(d=>d.e),backgroundColor:EG.map(d=>d.e>=50?A1:d.e>=20?A2:AL),borderRadius:4,borderSkipped:false}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>' '+c.parsed.y+' est.'}}},scales:{x:{ticks:{font:{size:8},maxRotation:50,autoSkip:false},grid:{display:false}},y:{beginAtZero:true,ticks:{font:{size:10}},grid:{color:'rgba(0,32,91,0.04)'}}}}});
+    new Chart(document.getElementById('cFacultad'),{type:'bar',indexAxis:'y',data:{labels:FAC.map(d=>d.f),datasets:[{data:FAC.map(d=>d.e),backgroundColor:FAC.map(d=>d.e>=80?A1:d.e>=30?A2:AL),borderRadius:4,borderSkipped:false}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>' '+c.parsed.x+' est.'}}},scales:{x:{beginAtZero:true,ticks:{font:{size:10}},grid:{color:'rgba(0,32,91,0.04)'}},y:{ticks:{font:{size:10}},grid:{display:false}}}}});
+  }
+  if(id==='academico'){
+    new Chart(document.getElementById('cPromedios'),{type:'bar',data:{labels:PD.map(d=>d.g),datasets:[{label:'Promedio grupo',data:PD.map(d=>d.p),backgroundColor:PD.map(d=>d.p>=REF_A?VE:d.p>=META?A2:A1),borderRadius:5,borderSkipped:false},{label:'Meta institucional (3.8)',data:PD.map(()=>META),type:'line',borderColor:'rgba(0,32,91,0.4)',borderWidth:1.5,borderDash:[4,3],pointRadius:0,fill:false}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:true,position:'top',labels:{font:{size:11},boxWidth:12,padding:12}},tooltip:{callbacks:{label:c=>c.dataset.label.includes('grupo')?' '+c.parsed.y.toFixed(2):c.dataset.label}}},scales:{x:{ticks:{font:{size:10}},grid:{display:false}},y:{min:3.6,max:4.5,ticks:{stepSize:0.1,font:{size:10}},grid:{color:'rgba(0,32,91,0.04)'}}}}});
+  }
+  if(id==='ascun'){
+    new Chart(document.getElementById('cAscun'),{type:'bar',data:{labels:PD.map(d=>d.g),datasets:[{label:'Promedio grupo',data:PD.map(d=>d.p),backgroundColor:A1,borderRadius:5,borderSkipped:false},{label:'Meta institucional (3.8)',data:PD.map(()=>META),type:'line',borderColor:'rgba(0,32,91,0.35)',borderWidth:1.5,borderDash:[4,3],pointRadius:0,fill:false}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:true,position:'top',labels:{font:{size:11},boxWidth:12,padding:12}},tooltip:{callbacks:{label:c=>c.dataset.label.includes('grupo')?' '+c.parsed.y.toFixed(2):c.dataset.label}}},scales:{x:{ticks:{font:{size:10}},grid:{display:false}},y:{min:3.6,max:4.5,ticks:{stepSize:0.1,font:{size:10}},grid:{color:'rgba(0,32,91,0.04)'}}}}});
+  }
+  if(id==='inventario'){
+    new Chart(document.getElementById('cInvCat'),{type:'bar',data:{labels:['Cuerdas pulsadas\ny frotadas','Percusión','Audio\ny sonido','Accesorios\ny soportes','Vientos','Teclados'],datasets:[{data:[76,52,42,26,17,16],backgroundColor:[A1,A2,'#4a72a8','#7a9cc0',AL,'#b8d0e8'],borderRadius:5,borderSkipped:false}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>' '+c.parsed.y+' ítems'}}},scales:{x:{ticks:{font:{size:9},maxRotation:0,autoSkip:false},grid:{display:false}},y:{beginAtZero:true,ticks:{font:{size:10}},grid:{color:'rgba(0,32,91,0.04)'}}}}});
+    new Chart(document.getElementById('cInvSala'),{type:'bar',indexAxis:'y',data:{labels:['Sala 2 · Campus central','Sala 3 · Campus central','Sala 1 · Campus central','Sala Danza Arena','Bodega','Sala Arena 3','Sala Pianos Arena','Sala Arena 1','Sala Arena 2'],datasets:[{data:[58,49,40,17,16,15,13,6,4],backgroundColor:[A1,A1,A1,A2,AL,A2,A2,AL,AL],borderRadius:4,borderSkipped:false}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>' '+c.parsed.x+' ítems'}}},scales:{x:{beginAtZero:true,ticks:{font:{size:10}},grid:{color:'rgba(0,32,91,0.04)'}},y:{ticks:{font:{size:9}},grid:{display:false}}}}});
+  }
+}
+
+/* ── HIX BARRAS ── */
+const HIX=[
+  {n:'HIX 1 · Expectativas altas',      nivel:'Parcial', pct:55},
+  {n:'HIX 2 · Tiempo y esfuerzo',       nivel:'Parcial', pct:50},
+  {n:'HIX 3 · Interacciones signif.',   nivel:'Bajo',    pct:20},
+  {n:'HIX 4 · Diversidad de contextos', nivel:'Bajo',    pct:20},
+  {n:'HIX 5 · Feedback de calidad',     nivel:'Parcial', pct:50},
+  {n:'HIX 6 · Reflexión guiada',        nivel:'Bajo',    pct:15},
+  {n:'HIX 7 · Problemas reales',        nivel:'Bajo',    pct:15},
+  {n:'HIX 8 · Demostración pública',    nivel:'Alto',    pct:85},
+];
+const hixEl=document.getElementById('hixBars');
+HIX.forEach(h=>{
+  const col=h.nivel==='Alto'?VE:h.nivel==='Parcial'?A2:'#b45309';
+  hixEl.innerHTML+=`<div style="display:flex;align-items:center;gap:8px;">
+    <div style="font-size:10px;color:var(--gris);min-width:152px;line-height:1.2;">${h.n}</div>
+    <div style="flex:1;height:7px;background:var(--azulP);border-radius:4px;overflow:hidden;">
+      <div style="height:100%;width:${h.pct}%;background:${col};border-radius:4px;"></div>
+    </div>
+    <span style="font-size:10px;font-weight:500;color:${col};min-width:42px;text-align:right;">${h.nivel}</span>
+  </div>`;
+});
+
+/* ── LÍDERES ── */
+const LIDERES=[
+  {n:'Miguel Ángel de Moya',g:'Grupos representativos',f:'Administración'},
+  {n:'Alejandro Trochez',g:'Tuna',f:'Ingeniería'},
+  {n:'Ayleen Acosta Amado',g:'Teatro',f:'Administración'},
+  {n:'Laura Otálora',g:'Danza Folclórica',f:'Administración'},
+  {n:'María Alejandra Amado',g:'Fusión',f:'Comunicación'},
+  {n:'María Paula Caballero',g:'OSUS',f:'Administración'},
+  {n:'Sonia Peña',g:'Danza Urbana',f:'Administración'},
+  {n:'Cristian Felipe Forero',g:'Punto Rock',f:'Administración'},
+  {n:'Juan Pablo Cifuentes',g:'USBand',f:'Comunicación'},
+  {n:'Sebastián Rojas',g:'Parranda',f:'Comunicación'},
+  {n:'Samuel Ramírez',g:'Puente Rojo / Entre Mares',f:'Administración'},
+  {n:'Gian Carlo Barragán',g:'Salsa y Bachata',f:'Fisioterapia'},
+  {n:'Santiago Cuéllar',g:'Repercusión',f:'Ingeniería'},
+];
+const lg=document.getElementById('liderGrid');
+LIDERES.forEach(l=>{
+  const ini=l.n.split(' ').filter(w=>w.length>2).slice(0,2).map(w=>w[0]).join('').toUpperCase();
+  lg.innerHTML+=`<div class="lider-card">
+    <div class="lider-av">${ini||'?'}</div>
+    <div class="lider-name">${l.n}</div>
+    <div class="lider-grupo">${l.g}</div>
+    <div class="lider-fac">${l.f?'F. '+l.f:''}</div>
+  </div>`;
+});
+
+/* ── INIT: pre-render ranking del overview y grupos al cargar ── */
+// Ranking overview (visible en home sin necesidad de click)
+(function initOverviewRanking(){
+  const ranked=[...GD].filter(d=>!d.x).sort((a,b)=>b.v-a.v).slice(0,5);
+  document.querySelectorAll('#rankOverview, #rankGrupos').forEach(el=>{
+    if(!el) return;
+    ranked.forEach((d,i)=>{
+      const p=Math.round(d.v/49*100);
+      el.innerHTML+=`<tr><td><span class="rn">${i+1}</span></td><td>${d.l}</td><td style="font-weight:500;color:${A1};">${d.v}</td><td><div class="rbb"><div class="rbf" style="width:${p*4}px;max-width:100%;"></div></div><div style="font-size:10px;color:#64748b;margin-top:1px;">${p}%</div></td></tr>`;
+    });
+  });
+})();
+
+// Promedio tabla (visible en rendimiento sin necesidad de click previo)
+(function initPromBody(){
+  const pb=document.getElementById('promBody');
+  if(!pb) return;
+  [...PD].sort((a,b)=>b.p-a.p).forEach(d=>{
+    const vs=(d.p-META).toFixed(2);
+    const cls=d.p>=REF_A?'b-verde':d.p>=META?'b-azul':'b-oro';
+    const lbl=d.p>=REF_A?'Sobre ASCUN':d.p>=META?'Sobre meta':'Bajo meta';
+    const bw=Math.round(((d.p-3.6)/(4.5-3.6))*100);
+    const bc=d.p>=REF_A?VE:d.p>=META?A2:A1;
+    pb.innerHTML+=`<tr><td>${d.g}</td><td style="font-family:'Playfair Display',serif;font-weight:600;color:${A1};font-size:14px;">${d.p.toFixed(2)}</td><td><span class="badge ${cls}">${lbl}</span></td><td><div class="rbb"><div class="rbf" style="width:${bw}%;background:${bc};"></div></div><div style="font-size:10px;color:${parseFloat(vs)>=0?VE:'#c62828'};margin-top:1px;">${parseFloat(vs)>=0?'+':''}${vs}</div></td></tr>`;
+  });
+})();
+
+// Tablas de estudiantes
+(function initEstTables(){
+  const tbGE=document.getElementById('tbGrupoEst');
+  if(tbGE) EG.forEach(d=>{const pct=Math.round(d.e/444*100);const bw=Math.round(d.e/87*100);tbGE.innerHTML+=`<tr><td>${d.g}</td><td style="font-weight:500;color:${A1};">${d.e}</td><td><div class="rbb"><div class="rbf" style="width:${bw}%;"></div></div><div style="font-size:10px;color:#64748b;margin-top:1px;">${pct}%</div></td></tr>`;});
+  const tbF=document.getElementById('tbFac');
+  if(tbF) FAC.forEach(d=>{const pct=Math.round(d.e/444*100);const bw=Math.round(d.e/118*100);tbF.innerHTML+=`<tr><td>${d.f}</td><td style="font-weight:500;color:${A1};">${d.e}</td><td><div class="rbb"><div class="rbf" style="width:${bw}%;"></div></div><div style="font-size:10px;color:#64748b;margin-top:1px;">${pct}%</div></td></tr>`;});
+})();
+
+// Grupos ASCUN
+(function initAscunGrupos(){
+  const ASCUN_GRUPOS=[
+    {n:'Génesis: Danza Urbana',icon:'🕺'},
+    {n:'USBand: Música Moderna',icon:'🎸'},
+    {n:'Coro',icon:'🎶'},
+    {n:'Puente Rojo',icon:'🎵'},
+    {n:'Saoko: Salsa y Bachata',icon:'💃'},
+    {n:'Ancestros: Danza Folclórica',icon:'🩰'},
+  ];
+  const ag=document.getElementById('ascunGrupos');
+  if(!ag) return;
+  ASCUN_GRUPOS.forEach(g=>{
+    ag.innerHTML+=`<div style="display:flex;align-items:center;gap:12px;padding:10px 14px;background:var(--azulP);border-radius:8px;">
+      <div style="width:30px;height:30px;border-radius:6px;background:var(--azul);display:flex;align-items:center;justify-content:center;font-size:15px;">${g.icon}</div>
+      <div style="font-size:13px;color:var(--texto);">${g.n}</div>
+    </div>`;
+  });
+})();
+</script>
+</body>
+</html>
