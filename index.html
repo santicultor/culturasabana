@@ -239,7 +239,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--texto);mi
         </div>
         <div style="background:rgba(255,255,255,0.06);padding:1rem 1.1rem;">
           <div style="font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,0.5);margin-bottom:5px;">Impacto</div>
-          <div style="font-size:12px;color:#fff;line-height:1.5;">444 estudiantes activos · Promedio 4.2 · 49 participaciones</div>
+          <div style="font-size:12px;color:#fff;line-height:1.5;">479 registrados · 243 activos · 104 participaciones</div>
         </div>
       </div>
     </div>
@@ -275,10 +275,10 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--texto);mi
     <div class="card">
       <div class="card-title">Semestre 2026-1 · cifras clave</div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
-        <div class="kpi-card" style="margin-bottom:0;"><div class="kpi-val">444</div><div class="kpi-lbl">Estudiantes inscritos</div></div>
+        <div class="kpi-card" style="margin-bottom:0;"><div class="kpi-val">243</div><div class="kpi-lbl">Estudiantes activos</div><div class="kpi-sub">479 registrados a inicio de semestre</div></div>
         <div class="kpi-card m" style="margin-bottom:0;"><div class="kpi-val m">15</div><div class="kpi-lbl">Grupos representativos</div></div>
         <div class="kpi-card v" style="margin-bottom:0;"><div class="kpi-val v">4.2</div><div class="kpi-lbl">Promedio APC 2026-1</div></div>
-        <div class="kpi-card o" style="margin-bottom:0;"><div class="kpi-val o">49</div><div class="kpi-lbl">Participaciones totales</div></div>
+        <div class="kpi-card o" style="margin-bottom:0;"><div class="kpi-val o">104</div><div class="kpi-lbl">Participaciones totales</div></div>
       </div>
     </div>
     <div class="card">
@@ -322,12 +322,13 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--texto);mi
     <button class="subtab"    onclick="showSub('ascun',this)">ASCUN</button>
     <button class="subtab"    onclick="showSub('lideres',this)">Líderes</button>
     <button class="subtab"    onclick="showSub('inventario',this)">Inventario</button>
+    <button class="subtab"    onclick="showSub('retencion',this)">Retención</button>
   </div>
 
   <!-- GRUPOS -->
   <div id="sub-grupos" class="subpanel show">
     <div class="card">
-      <div class="card-title">Participaciones por grupo · 49 en total</div>
+      <div class="card-title">Participaciones por grupo · 104 en total</div>
       <div style="display:flex;gap:14px;margin-bottom:14px;flex-wrap:wrap;">
         <span style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--gris);"><span style="width:10px;height:10px;border-radius:2px;background:#00205B;display:inline-block;"></span>Alta (5+)</span>
         <span style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--gris);"><span style="width:10px;height:10px;border-radius:2px;background:#00387b;display:inline-block;"></span>Media (3–4)</span>
@@ -341,13 +342,13 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--texto);mi
         <table class="rt"><thead><tr><th>#</th><th>Grupo</th><th>Part.</th><th>Del total</th></tr></thead><tbody id="rankGrupos"></tbody></table>
       </div>
       <div class="card">
-        <div class="card-title">Tipo de evento y estado</div>
-        <div class="sb"><div class="sbh"><span class="sbn">Evento Institucional</span><span class="sbv">24 · 49%</span></div><div class="sbb"><div class="sbf" style="width:49%;background:#00205B;"></div></div></div>
-        <div class="sb"><div class="sbh"><span class="sbn">Eventos Jefatura Cultura</span><span class="sbv">15 · 31%</span></div><div class="sbb"><div class="sbf" style="width:31%;background:#00387b;"></div></div></div>
-        <div class="sb" style="margin-bottom:16px;"><div class="sbh"><span class="sbn">Evento Externo</span><span class="sbv">10 · 20%</span></div><div class="sbb"><div class="sbf" style="width:20%;background:#c8d8ec;"></div></div></div>
+        <div class="card-title">Tipo de evento · 74 eventos · 104 participaciones</div>
+        <div class="sb"><div class="sbh"><span class="sbn">Evento Institucional</span><span class="sbv">32 · 46%</span></div><div class="sbb"><div class="sbf" style="width:46%;background:#00205B;"></div></div></div>
+        <div class="sb"><div class="sbh"><span class="sbn">Eventos Jefatura Cultura</span><span class="sbv">20 · 29%</span></div><div class="sbb"><div class="sbf" style="width:29%;background:#00387b;"></div></div></div>
+        <div class="sb" style="margin-bottom:8px;"><div class="sbh"><span class="sbn">Evento Externo</span><span class="sbv">17 · 25%</span></div><div class="sbb"><div class="sbf" style="width:25%;background:#c8d8ec;"></div></div></div>
+        <div style="font-size:10px;color:var(--gris);margin-bottom:12px;font-style:italic;">74 eventos gestionados · 104 participaciones de grupos — promedio de 1.4 grupos por evento</div>
         <div style="border-top:1px solid var(--borde);padding-top:12px;display:flex;gap:12px;flex-wrap:wrap;">
-          <div class="prog" style="margin:0;flex:1;"><span class="prog-label" style="font-size:11px;min-width:90px;">Completadas</span><div class="prog-track"><div class="prog-fill" style="width:55%;background:#1b5e20;"></div></div><span class="prog-num" style="color:#1b5e20;">27 · 55%</span></div>
-          <div class="prog" style="margin:0;flex:1;"><span class="prog-label" style="font-size:11px;min-width:90px;">Programadas</span><div class="prog-track"><div class="prog-fill" style="width:45%;background:#00387b;"></div></div><span class="prog-num">22 · 45%</span></div>
+          <div class="prog" style="margin:0;flex:1;"><span class="prog-label" style="font-size:11px;min-width:90px;">Completadas</span><div class="prog-track"><div class="prog-fill" style="width:100%;background:#1b5e20;"></div></div><span class="prog-num" style="color:#1b5e20;">74 · 100%</span></div>
         </div>
         <div class="card-title" style="margin-top:1rem;">Solicitudes por dependencia</div>
         <div style="position:relative;height:180px;"><canvas id="cDep"></canvas></div>
@@ -359,7 +360,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--texto);mi
   <div id="sub-estudiantes" class="subpanel">
     <div class="g2">
       <div class="card">
-        <div class="card-title">Inscritos por grupo · 444 estudiantes</div>
+        <div class="card-title">Estudiantes activos por grupo · 243</div>
         <div style="position:relative;height:310px;"><canvas id="cEstGrupo"></canvas></div>
       </div>
       <div class="card">
@@ -393,9 +394,9 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--texto);mi
         <div style="font-size:11px;color:var(--gris);margin-top:3px;">0.4 pts sobre la meta (3.8)</div>
       </div>
       <div class="rango-card" style="background:var(--alertaPale);border:1px solid #f5d87a;">
-        <div style="font-family:'Playfair Display',serif;font-size:32px;font-weight:600;color:var(--alerta);line-height:1;margin-bottom:4px;">44</div>
-        <div style="font-size:10px;text-transform:uppercase;letter-spacing:.07em;color:var(--alerta);">Estudiantes · 3.4–3.8</div>
-        <div style="font-size:11px;color:var(--gris);margin-top:3px;">Zona de acompañamiento</div>
+        <div style="font-family:'Playfair Display',serif;font-size:32px;font-weight:600;color:var(--alerta);line-height:1;margin-bottom:4px;">23</div>
+        <div style="font-size:10px;text-transform:uppercase;letter-spacing:.07em;color:var(--alerta);">Activos · zona 3.4–3.8</div>
+        <div style="font-size:11px;color:var(--gris);margin-top:3px;">De 44 con ese rango · acompañamiento prioritario</div>
       </div>
     </div>
     <div class="card">
@@ -412,7 +413,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--texto);mi
         <div style="display:flex;flex-direction:column;gap:9px;">
           <div style="padding:11px 13px;background:var(--alertaPale);border-radius:8px;border-left:3px solid var(--oro);">
             <div style="font-size:11px;font-weight:500;color:var(--alerta);margin-bottom:3px;">⚠ Acompañamiento prioritario</div>
-            <div style="font-size:11px;color:var(--gris);">44 estudiantes entre 3.4 y 3.8 — candidatos a intervención temprana desde Bienestar.</div>
+            <div style="font-size:11px;color:var(--gris);">De los 44 estudiantes con promedio entre 3.4 y 3.8, <strong>23 están activos</strong> en sus grupos — candidatos prioritarios a intervención temprana desde Bienestar.</div>
           </div>
           <div style="padding:11px 13px;background:var(--verdeL);border-radius:8px;border-left:3px solid var(--verde);">
             <div style="font-size:11px;font-weight:500;color:var(--verde);margin-bottom:3px;">✓ Progreso hacia la meta</div>
@@ -431,29 +432,105 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--texto);mi
   <div id="sub-ascun" class="subpanel">
     <div class="ascun-banner">
       <div>
-        <div style="font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,0.5);margin-bottom:6px;">Próximas semanas · 2026</div>
-        <div style="font-family:'Playfair Display',serif;font-size:20px;font-weight:600;color:#fff;margin-bottom:4px;">ASCUN Cultural 2026</div>
-        <div style="font-size:12px;color:rgba(255,255,255,0.6);">La Sabana representada por 6 grupos en competencia universitaria regional</div>
+        <div style="font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,0.5);margin-bottom:6px;">Resultados finales · 2026</div>
+        <div style="font-family:'Playfair Display',serif;font-size:20px;font-weight:600;color:#fff;margin-bottom:4px;">ASCUN Cultural 2026 · Completado</div>
+        <div style="font-size:12px;color:rgba(255,255,255,0.6);">La Sabana obtuvo 3 primeros lugares y 2 podios adicionales en competencia universitaria regional</div>
       </div>
       <div style="display:flex;align-items:center;gap:2rem;flex-shrink:0;position:relative;z-index:1;">
         <div class="a-stat"><div class="a-val">94</div><div class="a-lbl">Estudiantes</div></div>
         <div class="a-div"></div>
-        <div class="a-stat"><div class="a-val">21%</div><div class="a-lbl">De los inscritos</div></div>
+        <div class="a-stat"><div class="a-val">3</div><div class="a-lbl">Primeros lugares</div></div>
         <div class="a-div"></div>
-        <div class="a-stat"><div class="a-val">4.1</div><div class="a-lbl">Su promedio</div></div>
+        <div class="a-stat"><div class="a-val">5</div><div class="a-lbl">Podios totales</div></div>
       </div>
     </div>
+
+    <!-- Resultados por grupo -->
+    <div class="card" style="margin-bottom:1rem;">
+      <div class="card-title">Resultados por grupo · ASCUN Cultural 2026</div>
+      <div style="display:flex;flex-direction:column;gap:8px;">
+
+        <div style="display:flex;align-items:center;gap:14px;padding:12px 16px;background:#fffbea;border-radius:10px;border-left:4px solid #f59e0b;">
+          <div style="font-size:22px;flex-shrink:0;">🥇</div>
+          <div style="flex:1;">
+            <div style="font-size:13px;font-weight:500;color:var(--texto);">Génesis · Danza Urbana</div>
+            <div style="font-size:11px;color:var(--gris);margin-top:2px;">Primer lugar en su categoría</div>
+          </div>
+          <span style="font-size:11px;font-weight:600;color:#b45309;background:#fef3c7;padding:3px 12px;border-radius:20px;">1.º lugar</span>
+        </div>
+
+        <div style="display:flex;align-items:center;gap:14px;padding:12px 16px;background:#fffbea;border-radius:10px;border-left:4px solid #f59e0b;">
+          <div style="font-size:22px;flex-shrink:0;">🥇</div>
+          <div style="flex:1;">
+            <div style="font-size:13px;font-weight:500;color:var(--texto);">Ancestros · Danza Folclórica</div>
+            <div style="font-size:11px;color:var(--gris);margin-top:2px;">Primer lugar en su categoría</div>
+          </div>
+          <span style="font-size:11px;font-weight:600;color:#b45309;background:#fef3c7;padding:3px 12px;border-radius:20px;">1.º lugar</span>
+        </div>
+
+        <div style="display:flex;align-items:center;gap:14px;padding:12px 16px;background:var(--azulP);border-radius:10px;border-left:4px solid #60a5fa;">
+          <div style="font-size:22px;flex-shrink:0;">🥈</div>
+          <div style="flex:1;">
+            <div style="font-size:13px;font-weight:500;color:var(--texto);">Saoko · Salsa y Bachata</div>
+            <div style="font-size:11px;color:var(--gris);margin-top:2px;">Modalidad pareja: 2.º lugar · Modalidad grupo: 5.º lugar</div>
+          </div>
+          <span style="font-size:11px;font-weight:600;color:#1d4ed8;background:#dbeafe;padding:3px 12px;border-radius:20px;">2.º lugar (pareja)</span>
+        </div>
+
+        <div style="display:flex;align-items:center;gap:14px;padding:12px 16px;background:var(--azulP);border-radius:10px;border-left:4px solid var(--azul2);">
+          <div style="font-size:22px;flex-shrink:0;">🥉</div>
+          <div style="flex:1;">
+            <div style="font-size:13px;font-weight:500;color:var(--texto);">USBand · Música Moderna</div>
+            <div style="font-size:11px;color:var(--gris);margin-top:2px;">Tercer lugar en su categoría</div>
+          </div>
+          <span style="font-size:11px;font-weight:600;color:var(--azul2);background:#dbeafe;padding:3px 12px;border-radius:20px;">3.º lugar</span>
+        </div>
+
+        <div style="display:flex;align-items:center;gap:14px;padding:12px 16px;background:var(--bg);border-radius:10px;border-left:4px solid var(--azulL);">
+          <div style="font-size:22px;flex-shrink:0;">🎵</div>
+          <div style="flex:1;">
+            <div style="font-size:13px;font-weight:500;color:var(--texto);">Puente Rojo</div>
+            <div style="font-size:11px;color:var(--gris);margin-top:2px;">Cuarto lugar en su categoría</div>
+          </div>
+          <span style="font-size:11px;font-weight:600;color:var(--gris);background:var(--bg);border:1px solid var(--borde);padding:3px 12px;border-radius:20px;">4.º lugar</span>
+        </div>
+
+        <div style="display:flex;align-items:center;gap:14px;padding:12px 16px;background:var(--verdeL);border-radius:10px;border-left:4px solid var(--verde);">
+          <div style="font-size:22px;flex-shrink:0;">🎶</div>
+          <div style="flex:1;">
+            <div style="font-size:13px;font-weight:500;color:var(--texto);">Coro</div>
+            <div style="font-size:11px;color:var(--gris);margin-top:2px;">Modalidad participativa · destacada actuación con nuevo maestro</div>
+          </div>
+          <span style="font-size:11px;font-weight:600;color:var(--verde);background:#d1fae5;padding:3px 12px;border-radius:20px;">Participativo</span>
+        </div>
+
+      </div>
+    </div>
+
     <div class="g2">
       <div class="card">
-        <div class="card-title">Grupos que nos representan</div>
-        <div style="display:flex;flex-direction:column;gap:8px;" id="ascunGrupos"></div>
+        <div class="card-title">Promedio de los estudiantes ASCUN · APC 2026-1</div>
+        <div style="position:relative;height:240px;"><canvas id="cAscun"></canvas></div>
       </div>
       <div class="card">
-        <div class="card-title">Promedio de los estudiantes ASCUN · APC 2026-1</div>
-        <div style="position:relative;height:260px;"><canvas id="cAscun"></canvas></div>
+        <div class="card-title">Lectura estratégica</div>
+        <div style="display:flex;flex-direction:column;gap:9px;">
+          <div style="padding:11px 13px;background:var(--verdeL);border-radius:8px;border-left:3px solid var(--verde);">
+            <div style="font-size:11px;font-weight:500;color:var(--verde);margin-bottom:3px;">🏆 3 primeros lugares en una misma edición</div>
+            <div style="font-size:11px;color:var(--gris);">Génesis, Ancestros y Saoko (pareja) llevaron a La Sabana al podio más alto. Es el resultado más destacado en competencia regional.</div>
+          </div>
+          <div style="padding:11px 13px;background:#fffbea;border-radius:8px;border-left:3px solid #f59e0b;">
+            <div style="font-size:11px;font-weight:500;color:#b45309;margin-bottom:3px;">✨ Coro con nuevo maestro</div>
+            <div style="font-size:11px;color:var(--gris);">La participación del Coro en modalidad participativa refleja un proceso de transición exitoso. Una señal positiva del impacto del cambio de dirección.</div>
+          </div>
+          <div style="padding:11px 13px;background:var(--azulP);border-radius:8px;border-left:3px solid var(--azul);">
+            <div style="font-size:11px;font-weight:500;color:var(--azul);margin-bottom:3px;">→ Todos los grupos completaron su participación</div>
+            <div style="font-size:11px;color:var(--gris);">El 100% de las participaciones del semestre fueron completadas. Los 6 grupos clasificados representaron a La Sabana con resultados concretos.</div>
+          </div>
+        </div>
       </div>
     </div>
-    <div class="note verde" style="margin-top:.25rem;">El promedio de los 94 estudiantes que van a ASCUN (4.1) supera la meta institucional (3.8) en 0.3 puntos — evidencia de que se proyecta lo mejor del proceso cultural.</div>
+    <div class="note verde" style="margin-top:.25rem;">El promedio de los 94 estudiantes que participaron en ASCUN (4.1) supera la meta institucional (3.8) en 0.3 puntos — los mejores resultados deportivos y los mejores promedios van de la mano.</div>
   </div>
 
   <!-- LÍDERES -->
@@ -488,7 +565,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--texto);mi
     <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:1rem;">
       <div class="kpi-card"><div class="kpi-val">260</div><div class="kpi-lbl">Ítems registrados</div><div class="kpi-sub">Inventario total de Cultura</div></div>
       <div class="kpi-card o"><div class="kpi-val o" style="font-size:22px;">151</div><div class="kpi-lbl">Con código pendiente</div><div class="kpi-sub">Sin código, dañado o vencido · enviado a Adquisiciones</div></div>
-      <div class="kpi-card v"><div class="kpi-val v">41</div><div class="kpi-lbl">Horas beca en Cultura</div><div class="kpi-sub">5 vinculados a Jóvenes a la E</div></div>
+      <div class="kpi-card v"><div class="kpi-val v">243</div><div class="kpi-lbl">Estudiantes activos</div><div class="kpi-sub">De 479 registrados a inicio de semestre</div></div>
       <div class="kpi-card m"><div class="kpi-val m">10</div><div class="kpi-lbl">Salas gestionadas</div><div class="kpi-sub">Campus central + Arena</div></div>
     </div>
 
@@ -554,8 +631,59 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--texto);mi
     </div>
 
   </div>
-</div>
 
+  <!-- RETENCIÓN -->
+  <div id="sub-retencion" class="subpanel">
+
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:1rem;">
+      <div class="kpi-card"><div class="kpi-val">479</div><div class="kpi-lbl">Registrados a inicio de semestre</div></div>
+      <div class="kpi-card v"><div class="kpi-val v">243</div><div class="kpi-lbl">Estudiantes activos</div><div class="kpi-sub">51% de retención</div></div>
+      <div class="kpi-card o"><div class="kpi-val o">236</div><div class="kpi-lbl">No asistieron o desertaron</div><div class="kpi-sub">49% de los registrados</div></div>
+    </div>
+
+    <div class="card" style="margin-bottom:1rem;">
+      <div class="card-title">Tasa de retención · 2026-1</div>
+      <div style="height:28px;background:var(--azulP);border-radius:8px;overflow:hidden;margin-bottom:10px;display:flex;">
+        <div style="width:51%;background:var(--verde);border-radius:8px 0 0 8px;display:flex;align-items:center;justify-content:center;">
+          <span style="font-size:11px;font-weight:600;color:#fff;">243 activos · 51%</span>
+        </div>
+        <div style="width:49%;display:flex;align-items:center;justify-content:center;">
+          <span style="font-size:11px;font-weight:500;color:var(--alerta);">236 no asistieron · 49%</span>
+        </div>
+      </div>
+      <div style="font-size:11px;color:var(--gris);line-height:1.6;">Cerca de la mitad de los estudiantes que se inscriben no logran mantenerse activos. Las causas identificadas permiten diseñar acciones concretas para mejorar la retención en 2026-2.</div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Causas de deserción o no asistencia · análisis cualitativo 2026-1</div>
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <div style="display:flex;gap:14px;align-items:flex-start;padding:14px 16px;background:var(--bg);border-radius:10px;border-left:4px solid #c62828;">
+          <div style="min-width:28px;height:28px;border-radius:50%;background:#fdecea;display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:14px;font-weight:600;color:#c62828;flex-shrink:0;">1</div>
+          <div><div style="font-size:12px;font-weight:500;color:var(--texto);margin-bottom:4px;">Falta de tiempo y carga académica</div><div style="font-size:11px;color:var(--gris);line-height:1.6;">Es la razón más frecuente y casi nunca aparece sola. Está asociada a carga académica intensa, prácticas profesionales, estar en últimos semestres, recuperación médica o exceso de responsabilidades simultáneas.</div></div>
+        </div>
+        <div style="display:flex;gap:14px;align-items:flex-start;padding:14px 16px;background:var(--bg);border-radius:10px;border-left:4px solid var(--alerta);">
+          <div style="min-width:28px;height:28px;border-radius:50%;background:var(--alertaPale);display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:14px;font-weight:600;color:var(--alerta);flex-shrink:0;">2</div>
+          <div><div style="font-size:12px;font-weight:500;color:var(--texto);margin-bottom:4px;">Problemas de horario y logística</div><div style="font-size:11px;color:var(--gris);line-height:1.6;">Cruces con clases, horarios inconvenientes, ensayos que terminan muy tarde, dificultad para llegar a casa, distancia por mudanza o percepción de inseguridad al salir tarde del campus.</div></div>
+        </div>
+        <div style="display:flex;gap:14px;align-items:flex-start;padding:14px 16px;background:var(--bg);border-radius:10px;border-left:4px solid var(--oro);">
+          <div style="min-width:28px;height:28px;border-radius:50%;background:var(--oroPale);display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:14px;font-weight:600;color:var(--oro);flex-shrink:0;">3</div>
+          <div><div style="font-size:12px;font-weight:500;color:var(--texto);margin-bottom:4px;">Falta de información o comunicación</div><div style="font-size:11px;color:var(--gris);line-height:1.6;">Estudiantes que no sabían dónde se reunía el grupo, desconocían los horarios, esperaban ser contactados después de audiciones o sintieron que no hubo claridad suficiente para organizarse.</div></div>
+        </div>
+        <div style="display:flex;gap:14px;align-items:flex-start;padding:14px 16px;background:var(--bg);border-radius:10px;border-left:4px solid var(--azul2);">
+          <div style="min-width:28px;height:28px;border-radius:50%;background:var(--azulP);display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:14px;font-weight:600;color:var(--azul2);flex-shrink:0;">4</div>
+          <div><div style="font-size:12px;font-weight:500;color:var(--texto);margin-bottom:4px;">Experiencia dentro del grupo o metodología</div><div style="font-size:11px;color:var(--gris);line-height:1.6;">Estudiantes que sintieron que el nivel era muy avanzado, que ya había montajes definidos al llegar, que no les gustó la metodología del director o que no se sintieron cómodos con el instrumento asignado.</div></div>
+        </div>
+        <div style="display:flex;gap:14px;align-items:flex-start;padding:14px 16px;background:var(--bg);border-radius:10px;border-left:4px solid var(--azulL);">
+          <div style="min-width:28px;height:28px;border-radius:50%;background:var(--azulP);display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:14px;font-weight:600;color:var(--gris);flex-shrink:0;">5</div>
+          <div><div style="font-size:12px;font-weight:500;color:var(--texto);margin-bottom:4px;">No es deserción: otros compromisos o intención de volver</div><div style="font-size:11px;color:var(--gris);line-height:1.6;">Estudiantes en otro grupo representativo, en clubes deportivos o grupos formativos, o que manifiestan intención de vincularse en el próximo semestre.</div></div>
+        </div>
+      </div>
+      <div class="note azul" style="margin-top:1rem;"><strong>Oportunidad estratégica:</strong> las causas 2 y 3 (horarios y comunicación) son las más accionables a corto plazo. Revisar horarios de ensayo y fortalecer el proceso de inducción puede tener impacto directo en la retención 2026-2.</div>
+    </div>
+
+  </div>
+
+</div>
 <!-- ══════════════════════════
      UNISABANA EXPERIENCE
 ══════════════════════════ -->
@@ -569,7 +697,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--texto);mi
       <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:14px;">
         <div style="display:flex;gap:10px;align-items:flex-start;padding:10px 12px;background:var(--azulP);border-radius:8px;">
           <div style="width:6px;height:6px;border-radius:50%;background:var(--azul);margin-top:5px;flex-shrink:0;"></div>
-          <div style="font-size:12px;color:var(--texto);">Las 10 participaciones externas exponen a los grupos a audiencias y contextos distintos al campus</div>
+          <div style="font-size:12px;color:var(--texto);">Las 17 participaciones externas exponen a los grupos a audiencias y contextos distintos al campus</div>
         </div>
         <div style="display:flex;gap:10px;align-items:flex-start;padding:10px 12px;background:var(--azulP);border-radius:8px;">
           <div style="width:6px;height:6px;border-radius:50%;background:var(--azul);margin-top:5px;flex-shrink:0;"></div>
@@ -786,13 +914,13 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--texto);mi
           </div>
           <div style="background:var(--verdeL);border:1px solid #a5d6a7;border-radius:10px;padding:12px 14px;">
             <div style="font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--verde);margin-bottom:6px;">Nivel 3 · Impacto formativo</div>
-            <div style="font-size:11px;color:var(--texto);line-height:1.55;">Promedio de grupos vs. promedio general de la universidad. Tasa de permanencia de los 444 estudiantes vs. resto de población.</div>
+            <div style="font-size:11px;color:var(--texto);line-height:1.55;">Promedio de grupos vs. promedio general de la universidad. Tasa de permanencia de los 243 estudiantes activos vs. resto de población.</div>
           </div>
         </div>
 
         <div style="background:var(--alertaPale);border-left:3px solid var(--oro);border-radius:var(--rsm);padding:.85rem 1rem;">
           <div style="font-size:11px;font-weight:500;color:var(--alerta);margin-bottom:3px;">🎯 Acción concreta</div>
-          <div style="font-size:11px;color:var(--gris);line-height:1.55;">Identificar e implementar los indicadores de Nivel 2 y 3 para el semestre 2026-2. El dato de tasa de permanencia de los 444 estudiantes frente a la población general es el indicador de impacto más estratégico disponible.</div>
+          <div style="font-size:11px;color:var(--gris);line-height:1.55;">Identificar e implementar los indicadores de Nivel 2 y 3 para el semestre 2026-2. El dato de tasa de permanencia de los 243 estudiantes activos frente a la población general es el indicador de impacto más estratégico disponible.</div>
         </div>
       </div>
     </div>
@@ -909,8 +1037,8 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--texto);mi
             <div style="font-size:11px;font-weight:500;color:var(--texto);margin-bottom:8px;">Rendimiento académico</div>
             <div style="display:flex;flex-direction:column;gap:6px;">
               <div style="padding:9px 12px;background:var(--bg);border-radius:8px;border-left:2px solid var(--azul);font-size:11px;color:var(--gris);">Seguimiento por corte (APC 1, 2, final) por grupo — no solo el promedio sino la evolución.</div>
-              <div style="padding:9px 12px;background:var(--bg);border-radius:8px;border-left:2px solid var(--azul);font-size:11px;color:var(--gris);">Cruzar los 44 estudiantes en zona de acompañamiento (3.4–3.8) con sus grupos para priorizar intervención.</div>
-              <div style="padding:9px 12px;background:var(--bg);border-radius:8px;border-left:2px solid var(--azul);font-size:11px;color:var(--gris);">Comparar promedio de los 444 vs. promedio general de la universidad — el dato más estratégico disponible.</div>
+              <div style="padding:9px 12px;background:var(--bg);border-radius:8px;border-left:2px solid var(--azul);font-size:11px;color:var(--gris);">De los 44 estudiantes en zona de acompañamiento (3.4–3.8), 23 están activos. Priorizar intervención con estos 23 antes del cierre del semestre.</div>
+              <div style="padding:9px 12px;background:var(--bg);border-radius:8px;border-left:2px solid var(--azul);font-size:11px;color:var(--gris);">Comparar promedio de los 243 activos vs. promedio general de la universidad — el dato más estratégico disponible.</div>
             </div>
           </div>
           <div>
@@ -954,11 +1082,11 @@ const META=3.8, REF_A=4.1;
 
 /* ── DATOS ── */
 const GD=[
-  {l:'Puente Rojo',v:4},{l:'Tuna Femenina',v:4},{l:'Coro',v:7},{l:'Teatro',v:3},
-  {l:'USBand',v:4},{l:'Ósus',v:4},{l:'Ensamble',v:1},{l:'Tuna Masculina',v:5},
-  {l:'Ancestros',v:10},{l:'Urbano',v:3},{l:'Saoko',v:5},{l:'Punto Rock',v:3},
-  {l:'Repercusión',v:4},{l:'Acomp. Saxofón',v:5,x:true},
-  {l:'Fusión',v:3},{l:'Parranda',v:5},{l:'Entre Mares',v:2},
+  {l:'Puente Rojo',v:7},{l:'Tuna Femenina',v:6},{l:'Coro',v:13},{l:'Teatro',v:7},
+  {l:'USBand',v:8},{l:'Ósus',v:6},{l:'Tuna Masculina',v:7},
+  {l:'Ancestros',v:11},{l:'Urbano',v:6},{l:'Saoko',v:7},{l:'Punto Rock',v:6},
+  {l:'Repercusión',v:7},{l:'Fusión',v:6},{l:'Parranda',v:7},{l:'Entre Mares',v:4},
+  {l:'Acomp. Saxofón',v:6,x:true},
 ];
 const gc=v=>v>=5?A1:v>=3?A2:AL;
 
@@ -978,16 +1106,17 @@ const EG=[
   {g:'Repercusión',e:7},{g:'Entre Mares',e:7},
 ];
 const FAC=[
-  {f:'Comunicación',e:118},{f:'Ingeniería',e:100},{f:'Adm. y Gastronomía',e:86},
-  {f:'Cs. Comportamiento',e:36},{f:'Cs. Vida y Bienestar',e:36},{f:'Alumni',e:29},
-  {f:'Est. Jurídicos',e:24},{f:'Medicina',e:15},{f:'Educación',e:11},{f:'Filosofía',e:7},
+  {f:'Ingeniería',e:55},{f:'Comunicación',e:51},{f:'EICEA',e:44},
+  {f:'Alumni',e:22},{f:'Cs. Vida y Bienestar',e:18},
+  {f:'Est. Jurídicos',e:11},{f:'Medicina',e:11},
+  {f:'Filosofía y Cs. Humanas',e:6},{f:'Educación',e:4},
 ];
 
 /* ── BUILD CHARTS (lazy) ── */
 function buildCharts(id){
   if(id==='grupos'){
     new Chart(document.getElementById('cGrupos'),{type:'bar',data:{labels:GD.map(d=>d.l),datasets:[{data:GD.map(d=>d.v),backgroundColor:GD.map(d=>gc(d.v)),borderRadius:5,borderSkipped:false}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>' '+c.parsed.y+' participaciones'}}},scales:{x:{ticks:{font:{size:9},maxRotation:52,autoSkip:false},grid:{display:false}},y:{beginAtZero:true,ticks:{stepSize:2,font:{size:11}},grid:{color:'rgba(0,32,91,0.04)'}}}}});
-    new Chart(document.getElementById('cDep'),{type:'bar',data:{labels:['Admis.','Asamblea','Asoc.A.','Aspren','Bienestar','Currículo','Dir.Tec.','F.Cs.Vida','F.Educ.','F.Est.Jur.','F.Ing.','Fonsabana','Forum','Port.P.','Protocolo','Rel.Int.'],datasets:[{data:[1,1,1,1,19,1,1,4,1,2,3,1,9,1,1,2],backgroundColor:[A2,A2,A2,A2,A1,A2,A2,A2,A2,A2,A2,A2,A1,A2,A2,A2],borderRadius:4,borderSkipped:false}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>' '+c.parsed.y+' solicitudes'}}},scales:{x:{ticks:{font:{size:8},maxRotation:50,autoSkip:false},grid:{display:false}},y:{beginAtZero:true,ticks:{stepSize:5,font:{size:10}},grid:{color:'rgba(0,32,91,0.04)'}}}}});
+    new Chart(document.getElementById('cDep'),{type:'bar',data:{labels:['Admisiones','Asamblea Nac.','Asoc. Antioq.','Aspren','Bienestar','Capellanía','Currículo','Dir. Tecnología','F. Cs. Vida','F. Comunicación','F. Educación','F. Est. Jur.','F. Ingeniería','Fonsabana','Forum','Innov. y Empren.','Port. Proyectos','Protocolo','Rel. Int.'],datasets:[{data:[1,1,1,1,29,1,1,1,5,1,1,2,3,1,10,1,1,4,2],backgroundColor:[A2,A2,A2,A2,A1,A2,A2,A2,A2,A2,A2,A2,A2,A2,A1,A2,A2,A2,A2],borderRadius:4,borderSkipped:false}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>' '+c.parsed.y+' solicitudes'}}},scales:{x:{ticks:{font:{size:8},maxRotation:50,autoSkip:false},grid:{display:false}},y:{beginAtZero:true,ticks:{stepSize:5,font:{size:10}},grid:{color:'rgba(0,32,91,0.04)'}}}}});
   }
   if(id==='estudiantes'){
     new Chart(document.getElementById('cEstGrupo'),{type:'bar',data:{labels:EG.map(d=>d.g),datasets:[{data:EG.map(d=>d.e),backgroundColor:EG.map(d=>d.e>=50?A1:d.e>=20?A2:AL),borderRadius:4,borderSkipped:false}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>' '+c.parsed.y+' est.'}}},scales:{x:{ticks:{font:{size:8},maxRotation:50,autoSkip:false},grid:{display:false}},y:{beginAtZero:true,ticks:{font:{size:10}},grid:{color:'rgba(0,32,91,0.04)'}}}}});
@@ -1062,7 +1191,7 @@ LIDERES.forEach(l=>{
   document.querySelectorAll('#rankOverview, #rankGrupos').forEach(el=>{
     if(!el) return;
     ranked.forEach((d,i)=>{
-      const p=Math.round(d.v/49*100);
+      const p=Math.round(d.v/104*100);
       el.innerHTML+=`<tr><td><span class="rn">${i+1}</span></td><td>${d.l}</td><td style="font-weight:500;color:${A1};">${d.v}</td><td><div class="rbb"><div class="rbf" style="width:${p*4}px;max-width:100%;"></div></div><div style="font-size:10px;color:#64748b;margin-top:1px;">${p}%</div></td></tr>`;
     });
   });
